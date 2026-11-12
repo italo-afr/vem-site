@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sites com preço na tela e manutenção mensal</title>
+  <meta name="description" content="Monte seu site e veja o preço e o prazo na hora. Criação, manutenção e consertos para qualquer negócio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="marca" href="#inicio"><span class="marca-ponto"></span><span data-nome></span></a>
+      <nav class="menu" aria-label="Principal">
+        <a href="#ramos">Seu negócio</a>
+        <a href="#modelos">Modelos</a>
+        <a href="#montar">Montar site</a>
+        <a href="#planos">Manutenção</a>
+        <a href="#avulsos">Consertos</a>
+        <a href="#duvidas">Dúvidas</a>
+      </nav>
+      <a class="btn btn-sm" href="#montar">Montar meu site</a>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="wrap hero-in">
+        <div>
+          <p class="sobre">Criação e manutenção de sites</p>
+          <h1>Seu negócio no ar a partir de 7 dias, com o preço na tela.</h1>
+          <p class="lead">Escolha o tipo de site, veja o valor e o prazo na hora e peça pelo WhatsApp. Já tem site? A gente cuida, conserta e melhora.</p>
+          <div class="acoes">
+            <a class="btn" href="#montar">Montar meu site</a>
+            <a class="btn btn-claro" href="#raiox">Raio-X grátis do meu site</a>
+          </div>
+          <ul class="selos">
+            <li>Sem entrada na assinatura</li>
+            <li>Domínio no seu nome</li>
+            <li>No prazo ou o 1º mês é grátis</li>
+          </ul>
+        </div>
+        <aside class="hero-card" aria-label="Exemplo de pedido">
+          <p class="hc-rotulo">Exemplo de pedido</p>
+          <p class="hc-titulo">Site institucional + agendamento</p>
+          <div class="hc-linha"><span>Assinatura</span><strong id="hcPreco"></strong></div>
+          <div class="hc-linha"><span>Prazo</span><strong id="hcPrazo"></strong></div>
+          <div class="hc-linha"><span>Entrada</span><strong>R$ 0</strong></div>
+          <a class="hc-link" href="#montar">Montar o meu →</a>
+        </aside>
+      </div>
+    </section>
+
+    <section id="ramos" class="sec">
+      <div class="wrap">
+        <h2>Qual é o seu negócio?</h2>
+        <p class="sub">Cada ramo vende de um jeito. Escolha o seu e veja o que o site precisa ter.</p>
+        <div class="chips" id="ramoChips" role="tablist" aria-label="Ramos"></div>
+        <div class="ramo" id="ramoPainel" role="tabpanel"></div>
+      </div>
+    </section>
+
+    <section id="modelos" class="sec sec-cola">
+      <div class="wrap">
+        <h2>Veja como o seu pode ficar</h2>
+        <p class="sub">Projetos que já construímos e sites de demonstração para cada ramo.</p>
+        <h3 class="mods-titulo">O que já construímos</h3>
+        <div class="mods" id="trabalhosLista"></div>
+        <h3 class="mods-titulo">Modelos por ramo</h3>
+        <p class="mods-nota">Sites de demonstração com negócios fictícios. Abra, navegue e imagine o seu no lugar.</p>
+        <div class="mods" id="modelosLista"></div>
+      </div>
+    </section>
+
+    <section id="montar" class="sec sec-alt">
+      <div class="wrap">
+        <h2>Monte seu site e veja o preço</h2>
+        <p class="sub">Marque o que você precisa. O valor e o prazo mudam na hora.</p>
+        <div class="config">
+          <div class="config-opcoes">
+            <fieldset>
+              <legend>1. Tipo de site</legend>
+              <div class="cards" id="tipoLista"></div>
+            </fieldset>
+            <fieldset id="paginasBox">
+              <legend>2. Páginas extras</legend>
+              <div class="passo">
+                <button type="button" id="pgMenos" aria-label="Menos uma página">−</button>
+                <output id="pgNum" aria-live="polite">0</output>
+                <button type="button" id="pgMais" aria-label="Mais uma página">+</button>
+                <span class="passo-nota" id="pgNota"></span>
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend>3. Adicionais</legend>
+              <div class="checks" id="addLista"></div>
+            </fieldset>
+            <p class="nota">Precisa de sistema sob medida, área de cliente ou integração? <a href="#" data-wa="Olá! Preciso de um projeto sob medida.">Fale com a gente</a>.</p>
+          </div>
+          <aside class="resumo" aria-live="polite">
+            <div class="modo" role="group" aria-label="Forma de pagamento">
+              <button type="button" data-modo="mensal" class="ativo">Assinatura</button>
+              <button type="button" data-modo="avista">À vista</button>
+            </div>
+            <p class="resumo-preco"><span id="rPreco"></span><small id="rSufixo"></small></p>
+            <p class="resumo-det" id="rDet"></p>
+            <dl class="resumo-lista">
+              <div><dt>Prazo</dt><dd id="rPrazo"></dd></div>
+              <div><dt>Páginas</dt><dd id="rPaginas"></dd></div>
+            </dl>
+            <ul class="inclui" id="rInclui"></ul>
+            <a class="btn btn-cheio" id="rPedir" href="#" target="_blank" rel="noopener">Pedir este site pelo WhatsApp</a>
+            <p class="resumo-nota">Você conversa com a gente antes de pagar qualquer coisa.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section id="planos" class="sec">
+      <div class="wrap">
+        <h2>Manutenção mensal</h2>
+        <p class="sub">Para o site que fizemos ou para o que você já tem. Sem fidelidade nos planos de manutenção.</p>
+        <div class="planos" id="planosLista"></div>
+      </div>
+    </section>
+
+    <section id="avulsos" class="sec sec-alt">
+      <div class="wrap">
+        <h2>Consertos com preço fixo</h2>
+        <p class="sub">Seu site está com problema? Escolha o serviço. Vale para qualquer site, mesmo que não tenha sido feito por nós.</p>
+        <div class="avulsos" id="avulsosLista"></div>
+      </div>
+    </section>
+
+    <section id="raiox" class="sec">
+      <div class="wrap raiox">
+        <div>
+          <h2>Raio-X grátis do seu site</h2>
+          <p class="sub" id="raioxTexto"></p>
+        </div>
+        <form id="raioxForm" class="raiox-form" novalidate>
+          <label for="raioxUrl">Endereço do site</label>
+          <div class="raiox-linha">
+            <input id="raioxUrl" type="text" inputmode="url" placeholder="www.seunegocio.com.br" autocomplete="url" required>
+            <button class="btn" type="submit" id="raioxBtn">Fazer raio-X</button>
+          </div>
+          <p class="erro" id="raioxErro" role="alert" hidden>Digite o endereço do site, como www.seunegocio.com.br.</p>
+          <p class="raiox-status" id="raioxStatus" role="status" hidden></p>
+        </form>
+      </div>
+      <div class="wrap">
+        <div id="raioxSaida" class="raiox-saida" aria-live="polite" hidden></div>
+      </div>
+    </section>
+
+    <section class="sec sec-alt">
+      <div class="wrap">
+        <h2>O que a gente combina com você</h2>
+        <div class="grade3">
+          <article><h3>Preço fechado</h3><p>O valor que você vê é o que você paga. Qualquer coisa fora do combinado tem preço antes de começar.</p></article>
+          <article><h3>Prazo com garantia</h3><p>Se o site não estiver no ar no prazo combinado, a primeira mensalidade é por nossa conta.</p></article>
+          <article><h3>Sem refém</h3><p>O domínio fica no seu nome e o conteúdo é seu. Depois dos 12 meses de assinatura, o site também.</p></article>
+          <article><h3>Alteração pelo WhatsApp</h3><p>Mandou a mensagem, entrou na fila. Você não precisa aprender a mexer em painel nenhum.</p></article>
+          <article><h3>Relatório que dá para entender</h3><p>Todo mês: quantas visitas, quantos cliques no WhatsApp e o que melhorou.</p></article>
+          <article><h3>Aviso se cair</h3><p>O site é vigiado 24 horas. Se sair do ar, você fica sabendo por nós, já com o conserto em andamento.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="duvidas" class="sec">
+      <div class="wrap estreito">
+        <h2>Dúvidas comuns</h2>
+        <div id="faqLista" class="faq"></div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="wrap final-in">
+        <h2>Pronto para colocar seu negócio no ar?</h2>
+        <div class="acoes">
+          <a class="btn btn-branco" href="#montar">Montar meu site</a>
+          <a class="btn btn-contorno" href="#" data-wa="Olá! Quero saber mais sobre os sites e planos.">Falar no WhatsApp</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <span>© <span id="ano"></span> <span data-nome></span></span>
+      <a id="emailLink" href="#"></a>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="modelos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
