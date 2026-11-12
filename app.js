@@ -369,21 +369,29 @@
     c.style.setProperty("--my", ev.clientY - r.top + "px");
   });
 
-  if (!calmo && "IntersectionObserver" in window) {
+  if (!calmo || new URLSearchParams(location.search).has("anima")) {
     const alvos = document.querySelectorAll(
       ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li"
     );
-    const io = new IntersectionObserver(
-      (itens) => itens.forEach((it) => { if (it.isIntersecting) { it.target.classList.add("visto"); io.unobserve(it.target); } }),
-      { rootMargin: "0px 0px -8% 0px" }
-    );
-    alvos.forEach((el) => {
+    let faltam = [...alvos];
+    faltam.forEach((el) => {
       const i = [...el.parentElement.children].indexOf(el);
       el.style.setProperty("--i", Math.min(i, 5));
       el.classList.add("rev");
-      io.observe(el);
     });
+    const revelar = () => {
+      const limite = innerHeight * 0.94;
+      faltam = faltam.filter((el) => {
+        if (el.getBoundingClientRect().top > limite) return true;
+        el.classList.add("visto");
+        return false;
+      });
+      if (!faltam.length) { removeEventListener("scroll", revelar); removeEventListener("resize", revelar); }
+    };
+    addEventListener("scroll", revelar, { passive: true });
+    addEventListener("resize", revelar);
     document.documentElement.classList.add("anima");
+    revelar();
 
     const vis = $("#heroVis");
     const cartao = vis.querySelector(".hero-card");
