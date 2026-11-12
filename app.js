@@ -31,6 +31,8 @@
   const ex = calcular({ tipo: "institucional", extras: 0, adicionais: new Set(["agendamento"]) });
   $("#hcPreco").textContent = brl(ex.mensal) + "/mês";
   $("#hcPrazo").textContent = ex.dias + " dias";
+  $("#nDias").textContent = Math.min(...TIPOS.map((t) => t.dias)) + " dias";
+  $("#nMensal").textContent = brl(Math.min(...TIPOS.map((t) => t.mensal))) + "/mês";
 
   // Ramos
   function desenharRamos() {
@@ -96,7 +98,14 @@
     $("#pgMais").disabled = c.extras >= MAX_EXTRAS;
     $("#pgNota").textContent = `${c.tipo.paginas} já inclusas · cada extra ${mensal ? brl(PAGINA_EXTRA.mensal) + "/mês" : brl(PAGINA_EXTRA.avista)}`;
 
-    $("#rPreco").textContent = brl(mensal ? c.mensal : c.avista);
+    const novoPreco = brl(mensal ? c.mensal : c.avista);
+    if ($("#rPreco").textContent !== novoPreco) {
+      const caixa = $("#rPreco").parentElement;
+      caixa.classList.remove("pulsa");
+      void caixa.offsetWidth;
+      caixa.classList.add("pulsa");
+    }
+    $("#rPreco").textContent = novoPreco;
     $("#rSufixo").textContent = mensal ? "/mês" : "";
     $("#rDet").textContent = mensal
       ? `12 meses, sem entrada. Total de ${brl(c.mensal * 12)}, com hospedagem e manutenção inclusas.`
@@ -347,5 +356,42 @@
   if (location.hash.length > 1) {
     const alvo = document.getElementById(location.hash.slice(1));
     if (alvo) requestAnimationFrame(() => alvo.scrollIntoView({ behavior: "instant", block: "start" }));
+  }
+
+  // Efeitos: entrada ao rolar, brilho que segue o ponteiro e inclinação do cartão do topo.
+  const calmo = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".plano, .avulso, .grade3 article, .ramo, .numeros li").forEach((el) => el.classList.add("luz"));
+  document.addEventListener("pointermove", (ev) => {
+    const c = ev.target.closest && ev.target.closest(".luz");
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", ev.clientX - r.left + "px");
+    c.style.setProperty("--my", ev.clientY - r.top + "px");
+  });
+
+  if (!calmo && "IntersectionObserver" in window) {
+    const alvos = document.querySelectorAll(
+      ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li"
+    );
+    const io = new IntersectionObserver(
+      (itens) => itens.forEach((it) => { if (it.isIntersecting) { it.target.classList.add("visto"); io.unobserve(it.target); } }),
+      { rootMargin: "0px 0px -8% 0px" }
+    );
+    alvos.forEach((el) => {
+      const i = [...el.parentElement.children].indexOf(el);
+      el.style.setProperty("--i", Math.min(i, 5));
+      el.classList.add("rev");
+      io.observe(el);
+    });
+    document.documentElement.classList.add("anima");
+
+    const vis = $("#heroVis");
+    const cartao = vis.querySelector(".hero-card");
+    vis.addEventListener("pointermove", (ev) => {
+      const r = vis.getBoundingClientRect();
+      cartao.style.setProperty("--ry", ((ev.clientX - r.left) / r.width - 0.5) * 10 + "deg");
+      cartao.style.setProperty("--rx", (0.5 - (ev.clientY - r.top) / r.height) * 10 + "deg");
+    });
+    vis.addEventListener("pointerleave", () => { cartao.style.setProperty("--rx", "0deg"); cartao.style.setProperty("--ry", "0deg"); });
   }
 })();
