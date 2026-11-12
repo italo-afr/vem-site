@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projeto</title>
+  <meta name="theme-color" content="#12122a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="marca" href="index.html"><span class="marca-ponto"></span><span data-nome></span></a>
+      <a class="btn btn-sm" href="index.html#montar">Montar meu site</a>
+    </div>
+  </header>
+
+  <main class="pagina">
+    <div class="wrap" id="projeto"></div>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <span>© <span id="ano"></span> <span data-nome></span></span>
+      <span class="rodape-links"><a href="privacidade.html">Política de privacidade</a></span>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="modelos.js"></script>
+  <script>
+    (function () {
+      const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const wa = (texto) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
+      document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
+      document.getElementById("ano").textContent = new Date().getFullYear();
+
+      const p = TRABALHOS.find((t) => t.id && t.id === new URLSearchParams(location.search).get("p"));
+      const caixa = document.getElementById("projeto");
+      if (!p) {
+        caixa.innerHTML = `<a class="voltar" href="index.html#modelos">← Voltar aos projetos</a><h1>Projeto não encontrado</h1>`;
+        return;
+      }
+      document.title = p.nome + " · " + CONFIG.nome;
+      const tela = (t) => `<figure class="tela${t.cel ? " cel" : ""}"><div class="tela-moldura"><img src="${esc(t.src)}" alt="${esc(t.legenda)}" loading="lazy"></div><figcaption>${esc(t.legenda)}</figcaption></figure>`;
+      const largas = p.telas.filter((t) => !t.cel);
+      const cels = p.telas.filter((t) => t.cel);
+      caixa.innerHTML = `
+        <a class="voltar" href="index.html#modelos">← Voltar aos projetos</a>
+        <div><span class="proj-tipo">${esc(p.tipo)}</span></div>
+        <h1>${esc(p.nome)}</h1>
+        <p class="sub">${esc(p.desc)}</p>
+        <ul class="proj-pontos">${p.pontos.map((x) => `<li><h3>${esc(x.t)}</h3><p>${esc(x.d)}</p></li>`).join("")}</ul>
+        <h2>No computador</h2>
+        <div class="telas">${largas.map(tela).join("")}</div>
+        <h2>No celular</h2>
+        <div class="telas telas-cel">${cels.map(tela).join("")}</div>
+        <div class="acoes">
+          <a class="btn" target="_blank" rel="noopener" href="${esc(wa("Olá! Vi o projeto " + p.nome + " e quero um sistema parecido."))}">Quero um sistema assim</a>
+          ${p.codigo ? `<a class="btn btn-claro" target="_blank" rel="noopener" href="${esc(p.codigo)}">Ver o código no GitHub</a>` : ""}
+        </div>`;
+    })();
+  </script>
+</body>
+</html>

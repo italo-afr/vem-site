@@ -318,7 +318,9 @@
   // Portfólio: trabalhos reais
   const temaMod = (t) => `--m-bg:${t.bg};--m-tinta:${t.tinta};--m-cor:${t.cor};--m-corTinta:${t.corTinta};--m-fonte:${t.fonte}`;
   $("#trabalhosLista").innerHTML = TRABALHOS.map((t) => {
-    const abre = t.link ? `<a class="mod" href="${esc(t.link)}" target="_blank" rel="noopener" style="${temaMod(t.tema)}">` : `<div class="mod" style="${temaMod(t.tema)}">`;
+    const abre = t.telas
+      ? `<a class="mod" href="projeto.html?p=${esc(t.id)}" style="${temaMod(t.tema)}">`
+      : t.link ? `<a class="mod" href="${esc(t.link)}" target="_blank" rel="noopener" style="${temaMod(t.tema)}">` : `<div class="mod" style="${temaMod(t.tema)}">`;
     return `${abre}
       <div class="mod-tela">
         <div class="mod-barra" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -326,7 +328,7 @@
       </div>
       <div class="mod-pe"><strong>${esc(t.nome)}</strong><span>${esc(t.tipo)}</span></div>
       <p class="mod-desc">${esc(t.desc)}</p>
-    ${t.link ? "</a>" : "</div>"}`;
+    ${t.link || t.telas ? "</a>" : "</div>"}`;
   }).join("");
 
   // Portfólio de modelos
@@ -371,7 +373,7 @@
 
   if (!calmo || new URLSearchParams(location.search).has("anima")) {
     const alvos = document.querySelectorAll(
-      ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li"
+      ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li, .passos > li, .comp, .sis"
     );
     let faltam = [...alvos];
     faltam.forEach((el) => {

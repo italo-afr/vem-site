@@ -320,3 +320,81 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
   .flut, .cubo, .resumo-preco.pulsa { animation: none; }
   .anima .rev { opacity: 1; transform: none; transition: none; }
 }
+
+/* ===== Seções novas ===== */
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Como funciona */
+.passos { list-style: none; padding: 0; margin: 32px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: passo; }
+.passos li { counter-increment: passo; position: relative; background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: var(--raio); padding: 24px 22px; backdrop-filter: blur(12px); box-shadow: var(--sombra); }
+.passos li::before { content: counter(passo); display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; margin-bottom: 16px; font-weight: 800; color: #fff; background: linear-gradient(135deg, var(--cor), #8b6cf0); box-shadow: 0 12px 20px -12px var(--cor); }
+.passos li:last-child::before { background: linear-gradient(135deg, #14b8a6, var(--acento)); color: #06231f; box-shadow: 0 12px 20px -12px var(--acento); }
+.passos p { color: var(--suave); margin-top: 6px; font-size: 0.95rem; }
+
+/* Comparativo */
+.comp { margin-top: 32px; overflow-x: auto; background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: var(--raio-g); box-shadow: var(--sombra); backdrop-filter: blur(12px); padding: 10px; }
+.comp table { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0; font-size: 0.95rem; }
+.comp th, .comp td { text-align: left; padding: 16px 18px; vertical-align: top; }
+.comp thead th { font-size: 0.95rem; font-weight: 800; }
+.comp tbody th { font-weight: 700; white-space: nowrap; }
+.comp tbody td { color: var(--suave); }
+.comp tbody tr > * { border-top: 1px solid var(--linha); }
+.comp .comp-nos { background: var(--noite); color: #fff; font-weight: 600; border-color: rgba(255, 255, 255, 0.12); }
+.comp thead .comp-nos { border-radius: 18px 18px 0 0; color: var(--acento-claro); }
+.comp tbody tr:last-child .comp-nos { border-radius: 0 0 18px 18px; }
+.comp-nota { color: var(--suave); font-size: 0.85rem; margin-top: 12px; }
+
+/* Sistemas sob medida */
+.sis { position: relative; overflow: hidden; display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: center; background: linear-gradient(150deg, #1f1f4d, var(--noite) 55%); color: #fff; border-radius: 40px; padding: clamp(28px, 5vw, 56px); box-shadow: 0 40px 70px -40px rgba(40, 40, 140, 0.9); }
+.sis::before { content: ""; position: absolute; width: 420px; height: 420px; right: -140px; top: -200px; border-radius: 50%; background: radial-gradient(circle, rgba(139, 136, 255, 0.5), transparent 68%); pointer-events: none; }
+.sis > * { position: relative; }
+.sis-rotulo { color: var(--acento-claro); font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.sis-texto { color: var(--noite-suave); margin-top: 14px; font-size: 1.05rem; max-width: 50ch; }
+.sis-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.sis-lista li { padding: 14px 18px 14px 46px; position: relative; border-radius: 16px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.14); font-weight: 600; backdrop-filter: blur(8px); }
+.sis-lista li::before { content: "✓"; position: absolute; left: 18px; color: var(--acento-claro); font-weight: 800; }
+
+/* Rodapé e botão fixo de WhatsApp */
+.rodape-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.rodape { padding-bottom: 88px; }
+.wa-fixo { position: fixed; right: 18px; bottom: 18px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; padding: 13px 18px; border-radius: 999px; background: #25d366; color: #06311b; font-weight: 800; text-decoration: none; box-shadow: 0 18px 34px -14px rgba(18, 140, 70, 0.9); transition: transform 0.18s; }
+.wa-fixo:hover { transform: translateY(-3px) scale(1.03); }
+
+/* Página de projeto e páginas de texto */
+.pagina { padding: 56px 0 72px; }
+.pagina .voltar { font-weight: 700; text-decoration: none; }
+.pagina .voltar:hover { text-decoration: underline; }
+.pagina h1 { font-size: clamp(2rem, 4.4vw, 3rem); margin-top: 18px; }
+.proj-tipo { display: inline-block; margin-top: 22px; background: var(--cor-claro); color: var(--cor-esc); font-weight: 700; font-size: 0.82rem; padding: 5px 12px; border-radius: 999px; }
+.proj-pontos { list-style: none; padding: 0; margin: 28px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.proj-pontos li { background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: var(--raio); padding: 20px; box-shadow: var(--sombra); }
+.proj-pontos p { color: var(--suave); margin-top: 6px; font-size: 0.95rem; }
+.telas { display: grid; gap: 22px; margin-top: 20px; }
+.telas-cel { grid-template-columns: repeat(3, 1fr); }
+.tela { margin: 0; }
+.tela-moldura { background: #fff; border: 1px solid var(--vidro-borda); border-radius: 22px; padding: 8px; box-shadow: var(--sombra); overflow: hidden; }
+.tela-moldura img { display: block; width: 100%; height: auto; border-radius: 15px; }
+.tela.cel .tela-moldura { border-radius: 30px; padding: 10px; background: var(--noite); max-height: 620px; }
+.tela.cel img { border-radius: 21px; }
+.tela figcaption { color: var(--suave); font-size: 0.92rem; margin-top: 10px; text-align: center; }
+.pagina h2 { margin-top: 52px; font-size: 1.5rem; }
+.texto { max-width: 720px; }
+.texto h2 { font-size: 1.25rem; margin-top: 36px; }
+.texto p, .texto ul { color: var(--suave); margin-top: 10px; }
+.texto ul { padding-left: 20px; display: grid; gap: 6px; }
+
+@media (max-width: 900px) {
+  .passos { grid-template-columns: 1fr 1fr; }
+  .sis { grid-template-columns: 1fr; border-radius: 28px; }
+  .proj-pontos { grid-template-columns: 1fr; }
+  .telas-cel { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .passos { grid-template-columns: 1fr; }
+  .telas-cel { grid-template-columns: 1fr; max-width: 320px; margin-inline: auto; }
+  .wa-fixo span { display: none; }
+  .wa-fixo { padding: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .wa-fixo { transition: none; } }
+.topo-in > .btn { margin-left: auto; }
+.menu + .btn { margin-left: 0; }

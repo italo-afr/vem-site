@@ -23,7 +23,19 @@ const TRABALHOS = [
     nome: "ServiçoFlow", tipo: "Sistema sob medida · demonstração", tag: "Ordens de serviço",
     chamada: "Do pedido ao serviço feito, em um só lugar.",
     desc: "Para empresas de manutenção: o atendente monta o orçamento e agenda a visita, o cliente aprova por um link sem criar conta e o técnico registra o serviço com fotos pelo celular. Demonstração com dados fictícios.",
-    cta: "Ver o projeto", link: "https://github.com/italo-afr/servico-flow",
+    cta: "Ver as telas", id: "servicoflow", codigo: "https://github.com/italo-afr/servico-flow",
+    pontos: [
+      { t: "Atendente", d: "Registra o pedido, monta o orçamento e agenda a visita sem conflito de horário." },
+      { t: "Cliente", d: "Abre um link privado, vê o orçamento e aceita ou recusa, sem criar conta." },
+      { t: "Técnico", d: "Vê as visitas no celular, registra o que fez e envia as fotos do serviço." },
+    ],
+    telas: [
+      { src: "img/servicoflow/01-painel.png", legenda: "Painel com o resumo das ordens e das visitas do dia" },
+      { src: "img/servicoflow/06-agenda-semana.png", legenda: "Agenda da semana por técnico" },
+      { src: "img/servicoflow/04-cliente-orcamento-celular.png", legenda: "O cliente decide o orçamento pelo celular", cel: true },
+      { src: "img/servicoflow/07-tecnico-minhas-visitas-celular.png", legenda: "O técnico vê as visitas do dia", cel: true },
+      { src: "img/servicoflow/08-tecnico-execucao-celular.png", legenda: "Registro do serviço feito, com fotos", cel: true },
+    ],
     tema: { bg: "#eef6fb", tinta: "#0f2b3d", cor: "#0b76b8", corTinta: "#ffffff", fonte: "'Plus Jakarta Sans', system-ui, sans-serif" },
   },
 ];

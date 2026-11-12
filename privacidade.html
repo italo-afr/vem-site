@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de privacidade</title>
+  <meta name="theme-color" content="#12122a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="marca" href="index.html"><span class="marca-ponto"></span><span data-nome></span></a>
+      <a class="btn btn-sm" href="index.html#montar">Montar meu site</a>
+    </div>
+  </header>
+
+  <main class="pagina">
+    <div class="wrap texto">
+      <a class="voltar" href="index.html">← Voltar ao site</a>
+      <h1>Política de privacidade</h1>
+      <p>Esta página explica, em linguagem direta, o que acontece com os seus dados quando você usa o site da <span data-nome></span>.</p>
+
+      <h2>O que este site guarda</h2>
+      <p>Nada. O site não tem cadastro, não usa cookies e não tem ferramenta de contagem de visitas. As escolhas que você faz ao montar um site ficam só na sua tela, até você decidir enviar o pedido.</p>
+
+      <h2>Quando você pede pelo WhatsApp</h2>
+      <p>Os botões de pedido abrem o WhatsApp com uma mensagem pronta, que você pode ler e alterar antes de enviar. A partir daí passamos a ter o seu número e o que você escrever na conversa. Usamos esses dados apenas para responder, preparar o orçamento e prestar o serviço contratado.</p>
+
+      <h2>Quando você usa o raio-X</h2>
+      <p>O endereço do site que você digita é enviado ao PageSpeed Insights, um serviço do Google que faz a análise e devolve as notas. Nós não guardamos o endereço nem o resultado. Se você pedir o relatório pelo WhatsApp, ele passa a fazer parte da conversa.</p>
+
+      <h2>Serviços de terceiros</h2>
+      <ul>
+        <li>As letras do site são carregadas do Google Fonts. Como em qualquer acesso a um servidor, o Google recebe o endereço de internet (IP) do seu aparelho.</li>
+        <li>A hospedagem do site registra os acessos de forma técnica, para manter o serviço funcionando.</li>
+        <li>O WhatsApp trata os dados da conversa conforme a política dele.</li>
+      </ul>
+
+      <h2>Seus direitos</h2>
+      <p>Você pode pedir para saber quais dados seus temos, corrigir ou apagar esses dados, como prevê a Lei Geral de Proteção de Dados (Lei 13.709/2018). Para isso, escreva para <a id="emailLink" href="#"></a>.</p>
+
+      <h2>Mudanças nesta política</h2>
+      <p>Se o site passar a coletar algum dado novo, esta página será atualizada antes. Última atualização: novembro de 2026.</p>
+    </div>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <span>© <span id="ano"></span> <span data-nome></span></span>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script>
+    document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
+    document.title = "Política de privacidade · " + CONFIG.nome;
+    document.getElementById("ano").textContent = new Date().getFullYear();
+    document.getElementById("emailLink").textContent = CONFIG.email;
+    document.getElementById("emailLink").href = "mailto:" + CONFIG.email;
+  </script>
+</body>
+</html>
