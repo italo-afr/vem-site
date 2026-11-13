@@ -336,7 +336,7 @@
     (m) => `<a class="mod" href="modelo.html?m=${m.id}" style="--m-bg:${m.tema.bg};--m-tinta:${m.tema.tinta};--m-cor:${m.tema.cor};--m-corTinta:${m.tema.corTinta};--m-fonte:${m.tema.fonte}">
       <div class="mod-tela">
         <div class="mod-barra" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="mod-corpo"><small>${esc(m.tag)}</small><strong>${esc(m.chamada)}</strong><span class="mod-cta">${esc(m.cta)}</span></div>
+        <div class="mod-corpo mod-capa" style="--m-capa:url(img/modelos/${m.capa}.jpg)"><small>${esc(m.tag)}</small><strong>${esc(m.chamada)}</strong><span class="mod-cta">${esc(m.cta)}</span></div>
       </div>
       <div class="mod-pe"><strong>${esc(m.nome)}</strong><span>${esc(m.ramo)} · modelo</span></div>
     </a>`

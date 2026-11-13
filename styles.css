@@ -398,3 +398,14 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 @media (prefers-reduced-motion: reduce) { .wa-fixo { transition: none; } }
 .topo-in > .btn { margin-left: auto; }
 .menu + .btn { margin-left: 0; }
+
+/* Telas de projeto: recorte para não mostrar área vazia nem cortar no meio */
+.tela:not(.cel) .tela-moldura img { aspect-ratio: 16 / 8.6; object-fit: cover; object-position: top; }
+.tela.cel .tela-moldura { max-height: none; aspect-ratio: 9 / 18; }
+.tela.cel .tela-moldura img { height: 100%; object-fit: cover; object-position: top; }
+.pagina { scroll-margin-top: 100px; }
+
+/* Cartões de modelo com a foto de capa */
+.mod-capa { min-height: 220px; background: linear-gradient(90deg, color-mix(in srgb, var(--m-bg) 95%, transparent) 28%, color-mix(in srgb, var(--m-bg) 60%, transparent) 60%, color-mix(in srgb, var(--m-bg) 5%, transparent)), var(--m-capa) right center / cover no-repeat; }
+.mod-capa strong { max-width: 72%; }
+.mod .mod-capa { transition: background-position 0.4s; }
