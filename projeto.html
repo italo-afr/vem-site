@@ -46,7 +46,7 @@
         return;
       }
       document.title = p.nome + " · " + CONFIG.nome;
-      const tela = (t) => `<figure class="tela${t.cel ? " cel" : ""}"><div class="tela-moldura"><img src="${esc(t.src)}" alt="${esc(t.legenda)}" loading="lazy"></div><figcaption>${esc(t.legenda)}</figcaption></figure>`;
+      const tela = (t) => `<figure class="tela${t.cel ? " cel" : ""}"><button type="button" class="tela-moldura tela-abrir" data-i="${p.telas.indexOf(t)}" aria-label="Ampliar: ${esc(t.legenda)}"><img src="${esc(t.src)}" alt="${esc(t.legenda)}" loading="lazy"></button><figcaption>${esc(t.legenda)}</figcaption></figure>`;
       const largas = p.telas.filter((t) => !t.cel);
       const cels = p.telas.filter((t) => t.cel);
       caixa.innerHTML = `
@@ -61,6 +61,40 @@
         <div class="acoes">
           <a class="btn" target="_blank" rel="noopener" href="${esc(wa("Olá! Vi o projeto " + p.nome + " e quero um sistema parecido."))}">Quero um sistema assim</a>
         </div>`;
+
+      // Ampliação: clicar numa tela abre a imagem inteira, com setas para passar.
+      const lb = document.createElement("dialog");
+      lb.className = "lb";
+      lb.innerHTML = `<button type="button" class="lb-x" aria-label="Fechar">×</button>
+        <button type="button" class="lb-nav lb-ant" aria-label="Tela anterior">‹</button>
+        <figure><div class="lb-rolo"><img alt=""></div><figcaption></figcaption></figure>
+        <button type="button" class="lb-nav lb-prox" aria-label="Próxima tela">›</button>`;
+      document.body.appendChild(lb);
+      let atual = 0;
+      const mostrar = (i) => {
+        atual = (i + p.telas.length) % p.telas.length;
+        const t = p.telas[atual];
+        const img = lb.querySelector("img");
+        img.src = t.src;
+        img.alt = t.legenda;
+        lb.classList.toggle("lb-cel", !!t.cel);
+        lb.querySelector("figcaption").textContent = `${t.legenda} (${atual + 1} de ${p.telas.length})`;
+        lb.querySelector(".lb-rolo").scrollTop = 0;
+      };
+      caixa.addEventListener("click", (ev) => {
+        const b = ev.target.closest(".tela-abrir");
+        if (!b) return;
+        mostrar(Number(b.dataset.i));
+        lb.showModal();
+      });
+      lb.querySelector(".lb-x").addEventListener("click", () => lb.close());
+      lb.querySelector(".lb-ant").addEventListener("click", () => mostrar(atual - 1));
+      lb.querySelector(".lb-prox").addEventListener("click", () => mostrar(atual + 1));
+      lb.addEventListener("click", (ev) => { if (ev.target === lb) lb.close(); });
+      lb.addEventListener("keydown", (ev) => {
+        if (ev.key === "ArrowLeft") mostrar(atual - 1);
+        if (ev.key === "ArrowRight") mostrar(atual + 1);
+      });
     })();
   </script>
 </body>

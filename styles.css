@@ -414,3 +414,28 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 .telas:not(.telas-cel) .tela:first-child { grid-column: 1 / -1; }
 @media (max-width: 900px) { .telas:not(.telas-cel) { grid-template-columns: 1fr; } }
 .telas-cel:has(> .tela:only-child) { grid-template-columns: minmax(0, 300px); }
+
+/* Telas ampliáveis */
+.tela-abrir { appearance: none; display: block; width: 100%; font: inherit; color: inherit; cursor: zoom-in; position: relative; transition: transform 0.18s, box-shadow 0.18s; }
+.tela-abrir:hover { transform: translateY(-4px); box-shadow: 0 34px 60px -30px rgba(60, 60, 150, 0.6); }
+.tela-abrir::after { content: "Ampliar"; position: absolute; right: 18px; bottom: 18px; padding: 6px 12px; border-radius: 999px; background: var(--noite); color: #fff; font-size: 0.78rem; font-weight: 700; opacity: 0; transition: opacity 0.18s; }
+.tela-abrir:hover::after, .tela-abrir:focus-visible::after { opacity: 1; }
+.lb { border: 0; padding: 0; background: transparent; width: 100vw; height: 100vh; max-width: none; max-height: none; display: none; align-items: center; justify-content: center; gap: 12px; }
+.lb[open] { display: flex; }
+.lb::backdrop { background: rgba(10, 10, 28, 0.86); backdrop-filter: blur(6px); }
+.lb figure { margin: 0; display: grid; gap: 12px; justify-items: center; max-width: min(1500px, calc(100vw - 150px)); }
+.lb-rolo { max-height: calc(100vh - 110px); overflow: auto; border-radius: 16px; background: #fff; box-shadow: 0 40px 90px -30px #000; }
+.lb img { display: block; width: 100%; height: auto; }
+.lb-cel figure { max-width: min(420px, calc(100vw - 150px)); }
+.lb figcaption { color: #e9eaf8; font-size: 0.95rem; text-align: center; }
+.lb-x, .lb-nav { appearance: none; border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(255, 255, 255, 0.12); color: #fff; border-radius: 50%; width: 46px; height: 46px; font-size: 1.5rem; line-height: 1; flex: none; display: grid; place-items: center; }
+.lb-x:hover, .lb-nav:hover { background: rgba(255, 255, 255, 0.24); }
+.lb-x { position: fixed; top: 16px; right: 16px; }
+@media (max-width: 700px) {
+  .lb figure, .lb-cel figure { max-width: calc(100vw - 24px); }
+  .lb-nav { position: fixed; bottom: 14px; }
+  .lb-ant { left: 14px; }
+  .lb-prox { right: 14px; }
+  .lb-rolo { max-height: calc(100vh - 170px); }
+}
+@media (prefers-reduced-motion: reduce) { .tela-abrir { transition: none; } }
