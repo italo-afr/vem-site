@@ -4,7 +4,7 @@
   const wa = (texto) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  const estado = { tipo: "institucional", extras: 0, adicionais: new Set(), modo: "mensal", ramo: RAMOS[0].id };
+  const estado = { tipo: "institucional", extras: 0, adicionais: new Set(), modo: "mensal", plano: 0, ramo: RAMOS[0].id };
   const MAX_EXTRAS = 15;
 
   // Marca, rodapé e links fixos de WhatsApp
@@ -24,7 +24,16 @@
     const extras = tipo.extras ? e.extras : 0;
     const adds = ADICIONAIS.filter((a) => e.adicionais.has(a.id));
     const soma = (campo) => tipo[campo] + extras * PAGINA_EXTRA[campo] + adds.reduce((s, a) => s + a[campo], 0);
-    return { tipo, extras, adds, avista: soma("avista"), mensal: soma("mensal"), dias: soma("dias"), paginas: tipo.paginas + extras };
+    // Assinatura com plano maior: soma a diferença para o Básico.
+    const plano = PLANOS[e.plano || 0];
+    const difPlano = plano.preco - PLANOS[0].preco;
+    return {
+      tipo, extras, adds, plano, difPlano,
+      avista: soma("avista") + avistaDe(difPlano),
+      mensal: soma("mensal") + difPlano,
+      dias: soma("dias"),
+      paginas: tipo.paginas + extras,
+    };
   }
 
   // Cartão de exemplo do topo
@@ -65,6 +74,7 @@
     estado.tipo = r.tipo;
     estado.extras = 0;
     estado.adicionais = new Set(r.adicionais);
+    estado.plano = 0;
     desenharOpcoes();
     atualizar();
   });
@@ -87,6 +97,15 @@
         <span class="opcao-txt"><strong>${esc(a.nome)}</strong><span>${esc(a.desc)}</span><span class="opcao-preco">${precoOpcao(a, "+ ")}</span></span>
       </label>`
     ).join("");
+    $("#planoLista").innerHTML = PLANOS.map((p, i) => {
+      const dif = p.preco - PLANOS[0].preco;
+      const preco = i === 0 ? "incluso" : estado.modo === "mensal" ? "+ " + brl(dif) + "/mês" : "+ " + brl(avistaDe(dif));
+      return `<label class="opcao">
+        <input type="radio" name="plano" value="${i}" ${i === estado.plano ? "checked" : ""}>
+        <span class="opcao-txt"><strong>${esc(p.nome)}</strong><span>${esc(p.itens.filter((t) => !/^Tudo do/.test(t)).slice(i === 0 ? 3 : 0, i === 0 ? 4 : 2).join(" · "))}</span></span>
+        <span class="opcao-preco">${preco}</span>
+      </label>`;
+    }).join("");
   }
 
   function atualizar() {
@@ -110,12 +129,12 @@
     $("#rSufixo").textContent = mensal ? "/mês" : "";
     $("#rDet").textContent = mensal
       ? `12 meses, sem entrada. Total de ${brl(c.mensal * 12)}, com hospedagem e manutenção inclusas.`
-      : `Pagamento único. Hospedagem e manutenção a partir de ${brl(PLANOS[0].preco)}/mês.`;
+      : `Pagamento único, ${Math.round(DESCONTO_AVISTA * 100)}% abaixo da assinatura, com o primeiro ano de manutenção incluso. Sem fidelidade.`;
     $("#rPrazo").textContent = c.dias + " dias";
     $("#rPaginas").textContent = c.paginas === 1 ? "1 página" : c.paginas + " páginas";
 
     const inclui = [c.tipo.nome, ...c.adds.map((a) => a.nome), "Botão de WhatsApp e Google Meu Negócio", "Domínio no seu nome"];
-    if (mensal) inclui.push("Plano Básico de manutenção");
+    inclui.push(`Plano ${c.plano.nome} de manutenção${mensal ? "" : " no primeiro ano"}`);
     $("#rInclui").innerHTML = inclui.map((i) => `<li>${esc(i)}</li>`).join("");
 
     const ramo = RAMOS.find((r) => r.id === estado.ramo).nome;
@@ -124,7 +143,8 @@
       `• Tipo: ${c.tipo.nome} (${c.paginas} ${c.paginas === 1 ? "página" : "páginas"})`,
       `• Adicionais: ${c.adds.length ? c.adds.map((a) => a.nome).join(", ") : "nenhum"}`,
       `• Ramo: ${ramo}`,
-      `• Pagamento: ${mensal ? "assinatura de " + brl(c.mensal) + "/mês por 12 meses" : brl(c.avista) + " à vista"}`,
+      `• Manutenção: plano ${c.plano.nome}`,
+      `• Pagamento: ${mensal ? "assinatura de " + brl(c.mensal) + "/mês por 12 meses" : brl(c.avista) + " à vista, com o primeiro ano de manutenção"}`,
       `• Prazo: ${c.dias} dias`,
     ];
     $("#rPedir").href = wa(linhas.join("\n"));
@@ -136,6 +156,10 @@
   });
   $("#addLista").addEventListener("change", (ev) => {
     ev.target.checked ? estado.adicionais.add(ev.target.value) : estado.adicionais.delete(ev.target.value);
+    atualizar();
+  });
+  $("#planoLista").addEventListener("change", (ev) => {
+    estado.plano = Number(ev.target.value);
     atualizar();
   });
   $("#pgMenos").addEventListener("click", () => {

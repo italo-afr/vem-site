@@ -10,27 +10,34 @@ const CONFIG = {
 };
 
 // Tipos de site do configurador.
-// avista = preço único; mensal = assinatura de 12 meses (já inclui o plano Básico).
+// mensal = assinatura de 12 meses (já inclui o plano Básico). O preço à vista é calculado
+// pela regra DESCONTO_AVISTA, logo abaixo dos planos.
 const TIPOS = [
-  { id: "landing", nome: "Landing page", desc: "Uma página para vender um serviço ou captar contatos.", avista: 1200, mensal: 147, dias: 7, paginas: 1, extras: false },
-  { id: "institucional", nome: "Site institucional", desc: "Até 5 páginas: início, sobre, serviços, galeria e contato.", avista: 2800, mensal: 247, dias: 12, paginas: 5, extras: true },
-  { id: "loja", nome: "Loja virtual", desc: "Catálogo, carrinho e pagamento on-line.", avista: 5500, mensal: 397, dias: 25, paginas: 5, extras: true },
+  { id: "landing", nome: "Landing page", desc: "Uma página para vender um serviço ou captar contatos.", mensal: 147, dias: 7, paginas: 1, extras: false },
+  { id: "institucional", nome: "Site institucional", desc: "Até 5 páginas: início, sobre, serviços, galeria e contato.", mensal: 247, dias: 12, paginas: 5, extras: true },
+  { id: "loja", nome: "Loja virtual", desc: "Catálogo, carrinho e pagamento on-line.", mensal: 397, dias: 25, paginas: 5, extras: true },
 ];
 
-const PAGINA_EXTRA = { avista: 250, mensal: 20, dias: 1 };
+const PAGINA_EXTRA = { mensal: 20, dias: 1 };
 
 const ADICIONAIS = [
-  { id: "agendamento", nome: "Agendamento on-line", desc: "O cliente marca horário pelo site.", avista: 700, mensal: 60, dias: 4 },
-  { id: "catalogo", nome: "Cardápio ou catálogo digital", desc: "Produtos e preços que você mesmo atualiza.", avista: 500, mensal: 45, dias: 3 },
-  { id: "blog", nome: "Blog", desc: "Área de artigos para aparecer mais no Google.", avista: 400, mensal: 30, dias: 2 },
-  { id: "textos", nome: "Textos profissionais", desc: "A gente escreve os textos do site para você.", avista: 350, mensal: 30, dias: 2 },
+  { id: "agendamento", nome: "Agendamento on-line", desc: "O cliente marca horário pelo site.", mensal: 60, dias: 4 },
+  { id: "catalogo", nome: "Cardápio ou catálogo digital", desc: "Produtos e preços que você mesmo atualiza.", mensal: 45, dias: 3 },
+  { id: "blog", nome: "Blog", desc: "Área de artigos para aparecer mais no Google.", mensal: 30, dias: 2 },
+  { id: "textos", nome: "Textos profissionais", desc: "A gente escreve os textos do site para você.", mensal: 30, dias: 2 },
 ];
 
 const PLANOS = [
-  { nome: "Básico", preco: 127, itens: ["Hospedagem e certificado de segurança", "Backup diário", "Monitoramento 24h com aviso no WhatsApp", "Domínio no seu nome"] },
-  { nome: "Profissional", preco: 297, destaque: true, itens: ["Tudo do Básico", "2 horas de alterações por mês", "Pedidos de alteração pelo WhatsApp", "Relatório mensal de visitas e contatos"] },
+  { nome: "Básico", preco: 127, itens: ["Hospedagem e certificado de segurança", "Backup diário", "Monitoramento 24h com aviso no WhatsApp", "1 alteração por mês pelo WhatsApp", "Domínio no seu nome"] },
+  { nome: "Profissional", preco: 297, destaque: true, itens: ["Tudo do Básico", "Até 4 alterações por mês (2 horas)", "Pedidos de alteração pelo WhatsApp", "Relatório mensal de visitas e contatos"] },
   { nome: "Completo", preco: 697, itens: ["Tudo do Profissional", "Google Meu Negócio cuidado por nós", "Um artigo de blog por mês", "Atendimento em 1 dia útil"] },
 ];
+
+// À vista = 12 mensalidades com este desconto, arredondado para dezenas, já com o
+// primeiro ano do plano de manutenção escolhido. Sem fidelidade.
+const DESCONTO_AVISTA = 0.1;
+const avistaDe = (mensal) => Math.round((mensal * 12 * (1 - DESCONTO_AVISTA)) / 10) * 10;
+[...TIPOS, ...ADICIONAIS, PAGINA_EXTRA].forEach((x) => (x.avista = avistaDe(x.mensal)));
 
 const AVULSOS = [
   { id: "lento", nome: "Site lento", desc: "Otimização de velocidade", preco: 450, prazo: "3 dias úteis" },
@@ -57,5 +64,6 @@ const FAQ = [
   ["E se o site atrasar?", "O prazo combinado começa a contar quando recebemos seus textos e fotos. Se passarmos dele, a primeira mensalidade é por nossa conta."],
   ["O domínio fica no meu nome?", "Sim, sempre. Textos, fotos e logotipo também são seus desde o primeiro dia."],
   ["Vocês mexem em site que não fizeram?", "Sim. Os serviços avulsos e os planos de manutenção valem para qualquer site. Antes de começar, fazemos um raio-X grátis para saber o que ele precisa."],
-  ["O que conta como alteração?", "Troca de texto, imagem, telefone, horário ou preço, com até 30 minutos de trabalho. Página ou função nova tem orçamento à parte."],
+  ["O que conta como alteração?", "Troca de texto, imagem, telefone, horário ou preço, com até 30 minutos de trabalho. O plano Básico inclui uma por mês e o Profissional, até quatro. Página ou função nova tem orçamento à parte."],
+  ["Posso pagar à vista?", "Pode. O valor à vista é o das 12 mensalidades com 10% de desconto, já com o primeiro ano de manutenção e sem fidelidade."],
 ];
