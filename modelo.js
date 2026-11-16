@@ -2,7 +2,28 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const foto = (n) => `img/modelos/${n}.jpg`;
   const id = new URLSearchParams(location.search).get("m");
-  const m = MODELOS.find((x) => x.id === id) || MODELOS[0];
+  const m = structuredClone(MODELOS.find((x) => x.id === id) || MODELOS[0]);
+
+  // Prévia personalizada: ?nome=&cidade=&cor= vindos do formulário da página principal.
+  const q = new URLSearchParams(location.search);
+  const pvNome = (q.get("nome") || "").trim().slice(0, 40);
+  const pvCidade = (q.get("cidade") || "").trim().slice(0, 40);
+  const pvCor = /^#[0-9a-f]{6}$/i.test(q.get("cor") || "") ? q.get("cor") : "";
+  const previa = !!pvNome;
+  let enderecoDemo = CONTATO_FICTICIO.endereco;
+  if (previa) {
+    m.nome = pvNome;
+    if (pvCor) {
+      m.tema.cor = pvCor;
+      m.tema.cor2 = pvCor;
+      const [r, g, b] = [1, 3, 5].map((i) => parseInt(pvCor.slice(i, i + 2), 16));
+      m.tema.corTinta = 0.299 * r + 0.587 * g + 0.114 * b > 160 ? "#111111" : "#ffffff";
+    }
+    if (pvCidade) {
+      enderecoDemo = `Rua das Flores, 123 · Centro · ${pvCidade}`;
+      m.texto = `${m.texto} Em ${pvCidade}.`;
+    }
+  }
 
   Object.entries(m.tema).forEach(([k, v]) => document.body.style.setProperty("--" + k, v));
   document.body.classList.add("m-" + m.id);
@@ -10,6 +31,16 @@
   document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
   document.getElementById("demoNome").textContent = m.nome;
   document.getElementById("demoQuero").href = `index.html?ramo=${m.id}#montar`;
+  if (previa) {
+    document.title = `${m.nome} · prévia ${CONFIG.nome}`;
+    document.querySelector(".demo-faixa > span").innerHTML =
+      `Prévia do site de <strong>${esc(m.nome)}</strong>, montada pela <strong>${esc(CONFIG.nome)}</strong>. Textos, fotos e preços são de exemplo.`;
+    const quero = document.getElementById("demoQuero");
+    quero.textContent = "Quero este site";
+    quero.href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(`Olá! Vi a prévia do site de ${m.nome} e quero este site.`);
+    quero.target = "_blank";
+    quero.rel = "noopener";
+  }
 
   const numeros = (ns) => (ns ? `<dl class="m-numeros">${ns.map((n) => `<div><dt>${esc(n.n)}</dt><dd>${esc(n.t)}</dd></div>`).join("")}</dl>` : "");
   const cta = (classe = "") => `<a class="m-btn ${classe}" href="#contato">${esc(m.cta)}</a>`;
@@ -92,7 +123,7 @@
         <div>
           <h2>Contato</h2>
           <dl>
-            <div><dt>Endereço</dt><dd>${esc(CONTATO_FICTICIO.endereco)}</dd></div>
+            <div><dt>Endereço</dt><dd>${esc(enderecoDemo)}</dd></div>
             <div><dt>Horário</dt><dd>${esc(m.horario)}</dd></div>
             <div><dt>WhatsApp</dt><dd>${esc(CONTATO_FICTICIO.telefone)}</dd></div>
           </dl>
@@ -106,6 +137,8 @@
     </main>
     <footer class="m-rodape"><div class="m-wrap">
       <div class="m-rodape-topo"><strong class="m-marca">${esc(m.nome)}</strong><nav aria-label="Rodapé">${links.join("")}</nav></div>
-      <p>${esc(m.nome)} é um negócio fictício criado pela ${esc(CONFIG.nome)} para demonstração. Endereço, telefone, preços, pessoas e produtos não são reais, e as imagens foram geradas por inteligência artificial.</p>
+      <p>${previa
+        ? `Prévia do site de ${esc(m.nome)} montada pela ${esc(CONFIG.nome)} a partir de um modelo. Textos, endereço, telefone, preços e pessoas são de exemplo, e as imagens foram geradas por inteligência artificial.`
+        : `${esc(m.nome)} é um negócio fictício criado pela ${esc(CONFIG.nome)} para demonstração. Endereço, telefone, preços, pessoas e produtos não são reais, e as imagens foram geradas por inteligência artificial.`}</p>
     </div></footer>`;
 })();

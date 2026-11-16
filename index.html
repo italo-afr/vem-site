@@ -12,6 +12,7 @@
   <meta property="og:description" content="Monte seu site e veja o preço e o prazo na hora. Criação, manutenção e consertos para qualquer negócio.">
   <meta property="og:image" content="https://italo-afr.github.io/vem-site/og.png">
   <meta property="og:url" content="https://italo-afr.github.io/vem-site/">
+  <link rel="canonical" href="https://italo-afr.github.io/vem-site/">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +26,7 @@
       <nav class="menu" aria-label="Principal">
         <a href="#ramos">Seu negócio</a>
         <a href="#modelos">Modelos</a>
+        <a href="#previa">Prévia grátis</a>
         <a href="#montar">Montar site</a>
         <a href="#planos">Manutenção</a>
         <a href="#avulsos">Consertos</a>
@@ -107,6 +109,38 @@
         <h3 class="mods-titulo">Modelos por ramo</h3>
         <p class="mods-nota">Sites de demonstração com negócios fictícios. Abra, navegue e imagine o seu no lugar.</p>
         <div class="mods" id="modelosLista"></div>
+      </div>
+    </section>
+
+    <section id="previa" class="sec">
+      <div class="wrap previa">
+        <div>
+          <p class="sobre">Grátis e na hora</p>
+          <h2>Veja o seu site antes de pedir</h2>
+          <p class="sub">Responda quatro perguntas e abrimos um site-modelo do seu ramo com o nome, a cidade e a cor do seu negócio. Os textos e as fotos são de exemplo; no site de verdade, entram os seus.</p>
+        </div>
+        <form id="previaForm" class="previa-form" novalidate>
+          <div>
+            <label for="pvNome">Nome do negócio</label>
+            <input id="pvNome" type="text" maxlength="40" placeholder="Ex.: Clínica Sorriso" required>
+          </div>
+          <div class="previa-dupla">
+            <div>
+              <label for="pvRamo">Ramo</label>
+              <select id="pvRamo"></select>
+            </div>
+            <div>
+              <label for="pvCidade">Cidade</label>
+              <input id="pvCidade" type="text" maxlength="40" placeholder="Ex.: Campinas">
+            </div>
+          </div>
+          <fieldset class="previa-cores">
+            <legend>Cor principal</legend>
+            <div id="pvCores"></div>
+          </fieldset>
+          <button class="btn btn-cheio" type="submit">Ver a prévia do meu site</button>
+          <p class="erro" id="pvErro" role="alert" hidden>Digite o nome do negócio.</p>
+        </form>
       </div>
     </section>
 
@@ -272,6 +306,14 @@
     <div class="wrap rodape-in">
       <span>© <span id="ano"></span> <span data-nome></span></span>
       <span class="rodape-links"><a href="privacidade.html">Política de privacidade</a><a id="emailLink" href="#"></a></span>
+      <nav class="rodape-ramos" aria-label="Sites por ramo">
+        <a href="site-para-clinicas-e-consultorios.html">Site para clínicas</a>
+        <a href="site-para-restaurantes.html">Site para restaurantes</a>
+        <a href="site-para-prestadores-de-servico.html">Site para prestadores de serviço</a>
+        <a href="site-para-advogados-e-contadores.html">Site para advogados e contadores</a>
+        <a href="site-para-lojas.html">Site para lojas</a>
+        <a href="site-para-pequenos-negocios.html">Site para pequenos negócios</a>
+      </nav>
     </div>
   </footer>
 

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://italo-afr.github.io/vem-site/sitemap.xml

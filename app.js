@@ -47,6 +47,7 @@
         <div class="ramo-links">
           <a class="btn" href="#montar" id="ramoUsar">Ver preço para o meu negócio</a>
           <a href="modelo.html?m=${r.id}">Ver site-modelo deste ramo →</a>
+          <a href="${r.pagina}">Saiba mais sobre sites para ${esc(r.nome.toLowerCase())} →</a>
         </div>
       </div>
       <ul>${r.itens.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>`;
@@ -195,15 +196,79 @@
     "cumulative-layout-shift": "Elementos mudam de lugar durante o carregamento",
     "speed-index": "Carregamento visual lento",
     "is-on-https": "O site não usa conexão segura (cadeado)",
+    "meta-refresh": "A página se recarrega sozinha, o que atrapalha quem está lendo",
+    "meta-viewport": "O site impede o visitante de dar zoom no celular",
+    "button-name": "Botões sem nome para leitores de tela",
+    "link-name": "Links sem texto que diga para onde levam",
+    "image-alt": "Imagens sem descrição",
+    "color-contrast": "Texto com pouco contraste, difícil de ler",
+    "label": "Campos de formulário sem nome",
+    "document-title": "Página sem título",
+    "html-has-lang": "Página sem idioma definido",
+    "heading-order": "Títulos fora de ordem",
+    "aria-allowed-attr": "Marcações de acessibilidade usadas de forma errada",
+    "aria-required-attr": "Marcações de acessibilidade incompletas",
+    "aria-hidden-focus": "Elementos escondidos que ainda recebem foco",
+    "frame-title": "Quadros incorporados sem título",
+    "list": "Listas montadas de forma errada",
+    "listitem": "Itens de lista fora de uma lista",
+    "tap-targets": "Botões e links pequenos ou colados demais para o dedo",
+    "target-size": "Botões e links pequenos ou colados demais para o dedo",
+    "meta-description": "Falta a descrição que aparece no Google",
+    "link-text": "Links com texto genérico, como \"clique aqui\"",
+    "crawlable-anchors": "Links que o Google não consegue seguir",
+    "is-crawlable": "A página está bloqueada para o Google",
+    "robots-txt": "Arquivo de regras para o Google com problema",
+    "hreflang": "Indicação de idioma errada para o Google",
+    "canonical": "Endereço principal da página mal indicado",
+    "http-status-code": "A página responde com erro",
+    "font-size": "Letras pequenas demais no celular",
+    "errors-in-console": "O site registra erros ao carregar",
+    "deprecations": "O site usa recursos antigos do navegador",
+    "inspector-issues": "O navegador aponta problemas no site",
+    "third-party-cookies": "Cookies de terceiros que os navegadores estão bloqueando",
+    "image-aspect-ratio": "Imagens esticadas ou achatadas",
+    "image-size-responsive": "Imagens com resolução baixa para a tela",
+    "valid-source-maps": "Arquivos técnicos de depuração ausentes",
+    "csp-xss": "Falta uma proteção contra scripts maliciosos",
+    "geolocation-on-start": "O site pede localização assim que abre",
+    "notification-on-start": "O site pede para enviar notificações assim que abre",
+    "paste-preventing-inputs": "Campos que impedem colar texto",
+    "doctype": "Página sem a declaração de tipo do documento",
+    "charset": "Codificação de caracteres não declarada",
+    "unsized-images": "Imagens sem tamanho definido, que fazem a página pular",
+    "render-blocking-resources": "Arquivos que atrasam a primeira exibição",
+    "unused-javascript": "Código carregado que não é usado",
+    "unused-css-rules": "Estilos carregados que não são usados",
+    "uses-optimized-images": "Imagens pesadas que podem ser comprimidas",
+    "modern-image-formats": "Imagens em formato antigo e mais pesado",
+    "offscreen-images": "Imagens carregadas antes de aparecerem na tela",
+    "server-response-time": "Servidor demora a responder",
+    "redirects": "Redirecionamentos que atrasam a abertura",
+    "interactive": "Demora para a página responder ao toque",
+    "max-potential-fid": "Demora para responder ao primeiro toque",
+    "interaction-to-next-paint": "Demora para responder ao toque",
   };
+  // O Google às vezes devolve títulos em inglês mesmo pedindo português; esses ficam de fora.
+  const pareceIngles = (t) => /\b(the|is|are|uses?|do not|does not|have|has|elements?|should|avoid|ensure)\b/i.test(t);
   const temChave = Boolean(CONFIG.pagespeedKey);
   $("#raioxTexto").textContent = temChave
-    ? "Informe o endereço e veja em cerca de 30 segundos a nota do seu site em velocidade, Google, segurança e acessibilidade, com o que vale consertar e quanto custa."
+    ? "Informe o endereço e veja em até 1 minuto a nota do seu site em velocidade, Google, segurança e acessibilidade, com o que vale consertar e quanto custa."
     : "Informe o endereço. Em até 1 dia útil você recebe pelo WhatsApp a nota do seu site em velocidade, Google, segurança e acessibilidade, com o que vale consertar e quanto custa.";
   if (!temChave) $("#raioxBtn").textContent = "Pedir raio-X";
 
   const faixa = (n) => (n >= 90 ? ["rx-bom", "Bom"] : n >= 50 ? ["rx-medio", "Precisa melhorar"] : ["rx-ruim", "Ruim"]);
-  const virgula = (v) => String(v).replace(/(\d)\.(\d)/g, "$1,$2");
+  // "2,420 ms" (milhar em inglês) vira "2,4 s"; "2.3 s" vira "2,3 s".
+  const virgula = (v) => {
+    const t = String(v).replace(/\u00a0/g, " ");
+    const ms = /^([\d,.]+)\s*ms$/.exec(t);
+    if (ms) {
+      const n = Number(ms[1].replace(/,/g, ""));
+      if (n >= 1000) return (n / 1000).toFixed(1).replace(".", ",") + " s";
+      return Math.round(n) + " ms";
+    }
+    return t.replace(/(\d)([.,])(?=\d)/g, (_, d, c) => d + (c === "." ? "," : "."));
+  };
   const limpar = (t) => String(t).replace(/`/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 
   function recomendar(notas, lh) {
@@ -236,7 +301,9 @@
           if (!a || a.score === null || a.score >= 0.9 || vistos.has(r.id)) return;
           if (a.scoreDisplayMode === "informative" || a.scoreDisplayMode === "notApplicable" || a.scoreDisplayMode === "manual") return;
           vistos.add(r.id);
-          problemas.push({ titulo: RX_SIMPLES[r.id] || limpar(a.title), valor: a.displayValue, peso: r.weight * (1 - a.score) });
+          const titulo = RX_SIMPLES[r.id] || limpar(a.title);
+          if (!RX_SIMPLES[r.id] && pareceIngles(titulo)) return;
+          problemas.push({ titulo, valor: a.displayValue, peso: r.weight * (1 - a.score) });
         })
     );
     problemas.sort((a, b) => b.peso - a.peso);
@@ -295,7 +362,7 @@
     const btn = $("#raioxBtn");
     btn.disabled = true;
     btn.textContent = "Analisando…";
-    $("#raioxStatus").textContent = "Abrindo seu site em um celular simulado. Isso leva cerca de 30 segundos.";
+    $("#raioxStatus").textContent = "Abrindo seu site em um celular simulado. Isso pode levar até 1 minuto.";
     $("#raioxStatus").hidden = false;
     $("#raioxSaida").hidden = true;
     try {
@@ -354,6 +421,26 @@
   desenharOpcoes();
   atualizar();
 
+  // Prévia: abre o site-modelo do ramo com o nome, a cidade e a cor do negócio.
+  const CORES = [
+    ["#0f8f7e", "Verde-água"], ["#2457e6", "Azul"], ["#7c3aed", "Roxo"],
+    ["#c2410c", "Terracota"], ["#be185d", "Rosa"], ["#1f2937", "Grafite"],
+  ];
+  $("#pvRamo").innerHTML = RAMOS.map((r) => `<option value="${r.id}"${r.id === estado.ramo ? " selected" : ""}>${esc(r.nome)}</option>`).join("");
+  $("#pvCores").innerHTML = CORES.map(([c, n], i) =>
+    `<label class="previa-cor" style="--c:${c}"><input type="radio" name="pvCor" value="${c}"${i === 0 ? " checked" : ""}><span class="oculto">${n}</span></label>`
+  ).join("");
+  $("#previaForm").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    const nome = $("#pvNome").value.trim();
+    $("#pvErro").hidden = !!nome;
+    if (!nome) return $("#pvNome").focus();
+    const p = new URLSearchParams({ m: $("#pvRamo").value, nome, cor: document.querySelector("[name=pvCor]:checked").value });
+    const cidade = $("#pvCidade").value.trim();
+    if (cidade) p.set("cidade", cidade);
+    location.href = "modelo.html?" + p;
+  });
+
   // O conteúdo é montado depois do carregamento, então reposiciona quem chegou por um link com âncora.
   if (location.hash.length > 1) {
     const alvo = document.getElementById(location.hash.slice(1));
@@ -373,7 +460,7 @@
 
   if (!calmo || new URLSearchParams(location.search).has("anima")) {
     const alvos = document.querySelectorAll(
-      ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li, .passos > li, .comp, .sis"
+      ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li, .passos > li, .comp, .sis, .previa-form"
     );
     let faltam = [...alvos];
     faltam.forEach((el) => {
