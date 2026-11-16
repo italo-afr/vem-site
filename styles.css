@@ -413,3 +413,4 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 .telas:not(.telas-cel) { grid-template-columns: repeat(3, 1fr); }
 .telas:not(.telas-cel) .tela:first-child { grid-column: 1 / -1; }
 @media (max-width: 900px) { .telas:not(.telas-cel) { grid-template-columns: 1fr; } }
+.telas-cel:has(> .tela:only-child) { grid-template-columns: minmax(0, 300px); }

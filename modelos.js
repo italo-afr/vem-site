@@ -16,7 +16,19 @@ const TRABALHOS = [
     nome: "Nexo ERP", tipo: "Sistema sob medida · demonstração", tag: "Gestão financeira",
     chamada: "Vendas, contas e contratos em um só sistema.",
     desc: "Orçamentos e vendas parceladas, contas a pagar e a receber, contratos mensais, estoque simples e relatório de caixa. Versão de demonstração com dados fictícios.",
-    cta: "Versão de demonstração",
+    cta: "Ver as telas", id: "nexo",
+    pontos: [
+      { t: "Financeiro", d: "Contas a pagar e a receber com parcelas, recebimento parcial e saldo de cada conta bancária." },
+      { t: "Vendas e estoque", d: "O orçamento parcelado vira venda, gera as parcelas e dá baixa no estoque." },
+      { t: "Relatórios", d: "Caixa por categoria, previsão para seis meses e os clientes que mais compram." },
+    ],
+    telas: [
+      { src: "img/nexo/01-visao-geral.webp", legenda: "Visão geral com saldo, o que entra e o que sai no mês e as contas em atraso" },
+      { src: "img/nexo/02-contas-a-receber.webp", legenda: "Contas a receber com situação de cada parcela" },
+      { src: "img/nexo/05-relatorios.webp", legenda: "Relatório de caixa por categoria" },
+      { src: "img/nexo/04-estoque.webp", legenda: "Posição de estoque com alerta de reposição" },
+      { src: "img/nexo/06-celular.webp", legenda: "A mesma visão geral no celular", cel: true },
+    ],
     tema: { bg: "#111827", tinta: "#eef2ff", cor: "#818cf8", corTinta: "#111827", fonte: "'Space Grotesk', system-ui, sans-serif" },
   },
   {
