@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=1fc00a28e7fa">
   <!-- SEO-INICIO -->
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://vemsite.com.br/#empresa", "name": "Vem Site", "alternateName": "Vemsite", "url": "https://vemsite.com.br/", "email": "vemsitecontato@gmail.com", "logo": "https://vemsite.com.br/favicon.svg", "description": "Criação e manutenção de sites para pequenos negócios, com preços e prazos na tela."}, {"@type": "WebSite", "@id": "https://vemsite.com.br/#website", "url": "https://vemsite.com.br/", "name": "Vem Site", "alternateName": ["Vemsite", "vemsite.com.br"], "inLanguage": "pt-BR", "publisher": {"@id": "https://vemsite.com.br/#empresa"}}, {"@type": "Service", "@id": "https://vemsite.com.br/#servico-landing", "name": "Landing page", "description": "Uma página para vender um serviço ou captar contatos. Assinatura de 12 meses a R$ 147/mês, com hospedagem e manutenção básica inclusas. Prazo a partir de 7 dias após receber os materiais.", "provider": {"@id": "https://vemsite.com.br/#empresa"}, "url": "https://vemsite.com.br/#montar"}, {"@type": "Service", "@id": "https://vemsite.com.br/#servico-institucional", "name": "Site institucional", "description": "Até 5 páginas: início, sobre, serviços, galeria e contato. Assinatura de 12 meses a R$ 247/mês, com hospedagem e manutenção básica inclusas. Prazo a partir de 12 dias após receber os materiais.", "provider": {"@id": "https://vemsite.com.br/#empresa"}, "url": "https://vemsite.com.br/#montar"}, {"@type": "Service", "@id": "https://vemsite.com.br/#servico-loja", "name": "Loja virtual", "description": "Catálogo, carrinho e pagamento on-line. Assinatura de 12 meses a R$ 397/mês, com hospedagem e manutenção básica inclusas. Prazo a partir de 25 dias após receber os materiais.", "provider": {"@id": "https://vemsite.com.br/#empresa"}, "url": "https://vemsite.com.br/#montar"}]}</script>
 <!-- SEO-FIM -->
@@ -119,7 +119,7 @@
         <h2>Qual é o seu negócio?</h2>
         <p class="sub">Cada ramo vende de um jeito. Escolha o seu e veja o que o site precisa ter.</p>
         <div class="chips" id="ramoChips" role="tablist" aria-label="Ramos"></div>
-        <div class="ramo" id="ramoPainel" role="tabpanel"></div>
+        <div class="ramo" id="ramoPainel" role="tabpanel" tabindex="0"></div>
       </div>
     </section>
 
@@ -188,6 +188,7 @@
       <div class="wrap">
         <h2>Monte seu site e veja o preço</h2>
         <p class="sub">Marque o que você precisa. O valor e o prazo mudam na hora.</p>
+        <p class="nota" id="arredondamentoNota" hidden>À vista, os valores das opções são aproximados. O desconto e o arredondamento são aplicados uma única vez ao total do pedido.</p>
         <div class="pedido-contexto" id="pedidoContexto" hidden><p id="pedidoNome"></p><a id="editarPrevia" href="#previa">Ver minha prévia →</a></div>
         <div class="config">
           <div class="config-opcoes">
@@ -312,6 +313,7 @@
             <p class="nota" id="consertoCanal">O pedido abre no seu aplicativo de e-mail para você revisar e enviar. Não há cobrança nesta etapa.</p>
             <div id="consertoRevisao" class="conserto-revisao" hidden><strong>Seu pedido está pronto para revisar</strong><p id="consertoRevisaoTexto"></p><a class="btn btn-cheio" id="consertoAbrir" href="mailto:vemsitecontato@gmail.com">Abrir e-mail com o pedido →</a><button type="button" class="conserto-copiar" id="consertoCopiar">Copiar texto do pedido</button><p class="nota" id="consertoCopiaStatus" role="status"></p><p class="nota">Se não abrir, envie o texto para <a href="mailto:vemsitecontato@gmail.com">vemsitecontato@gmail.com</a>.</p></div>
           </form>
+          <noscript><style>#consertoForm{display:none}</style><p>Envie a descrição do problema e o endereço do site para <a href="mailto:vemsitecontato@gmail.com">vemsitecontato@gmail.com</a>.</p></noscript>
         </div>
       </div>
     </section>
@@ -425,9 +427,10 @@
 
   <div class="orcamento-movel" id="orcamentoMovel" hidden><div><small>Seu orçamento</small><strong id="movelPreco"></strong></div><a class="btn btn-sm" href="#pedido">Ver resumo →</a></div>
   <noscript><p class="wrap">Para personalizar a prévia e calcular adicionais, ative o JavaScript. Você também pode pedir um orçamento em <a href="mailto:vemsitecontato@gmail.com">vemsitecontato@gmail.com</a>.</p></noscript>
-  <script src="config.js" defer></script>
-  <script src="jornada.js" defer></script>
-  <script src="modelos.js" defer></script>
-  <script src="app.js" defer></script>
+  <script src="config.js?v=1ccd01895499" defer></script>
+  <script src="contato.js?v=27c9730acdba" defer></script>
+  <script src="jornada.js?v=ce0c5cec7c1a" defer></script>
+  <script src="modelos.js?v=7f6b68ff9824" defer></script>
+  <script src="app.js?v=b50c84bbd1a4" defer></script>
 </body>
 </html>

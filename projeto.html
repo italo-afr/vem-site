@@ -9,18 +9,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=1fc00a28e7fa">
 </head>
 <body>
   <header class="topo">
     <div class="wrap topo-in">
-      <a class="marca" href="index.html"><span class="marca-ponto"></span><span data-nome></span></a>
+      <a class="marca" href="index.html"><span class="marca-ponto"></span><span data-nome>Vem Site</span></a>
       <a class="btn btn-sm" href="index.html#montar">Montar meu site</a>
     </div>
   </header>
 
   <main class="pagina">
     <div class="wrap" id="projeto"></div>
+    <noscript><p class="wrap">Ative o JavaScript para ver as telas do projeto ou <a href="index.html#trabalhos">volte aos trabalhos</a>. Você também pode falar com a gente em <a href="mailto:vemsitecontato@gmail.com">vemsitecontato@gmail.com</a>.</p></noscript>
   </main>
 
   <footer class="rodape">
@@ -30,12 +31,13 @@
     </div>
   </footer>
 
-  <script src="config.js"></script>
-  <script src="modelos.js"></script>
+  <script src="config.js?v=1ccd01895499"></script>
+  <script src="contato.js?v=27c9730acdba"></script>
+  <script src="modelos.js?v=7f6b68ff9824"></script>
   <script>
     (function () {
       const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-      const wa = (texto) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
+      const wa = CONTATO.url;
       document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
       document.getElementById("ano").textContent = new Date().getFullYear();
 
@@ -65,10 +67,14 @@
       // Ampliação: clicar numa tela abre a imagem inteira, com setas para passar.
       const lb = document.createElement("dialog");
       lb.className = "lb";
-      lb.innerHTML = `<button type="button" class="lb-x" aria-label="Fechar">×</button>
-        <button type="button" class="lb-nav lb-ant" aria-label="Tela anterior">‹</button>
-        <figure><div class="lb-rolo"><img alt=""></div><figcaption></figcaption></figure>
-        <button type="button" class="lb-nav lb-prox" aria-label="Próxima tela">›</button>`;
+      lb.setAttribute('aria-label', 'Capturas do projeto ' + p.nome);
+      lb.setAttribute('aria-describedby', 'galeriaLegenda');
+      const icone = (caminho) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${caminho}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      lb.innerHTML = `<button type="button" class="lb-x" aria-label="Fechar">${icone('M6 6l12 12M18 6L6 18')}</button>
+        <figure><div class="lb-midia"><div class="lb-rolo"><img alt=""></div>
+          <button type="button" class="lb-nav lb-ant" aria-label="Tela anterior">${icone('M14 5l-7 7 7 7')}</button>
+          <button type="button" class="lb-nav lb-prox" aria-label="Próxima tela">${icone('M10 5l7 7-7 7')}</button>
+        </div><figcaption id="galeriaLegenda" aria-live="polite"></figcaption></figure>`;
       document.body.appendChild(lb);
       let atual = 0;
       const mostrar = (i) => {
@@ -86,14 +92,16 @@
         if (!b) return;
         mostrar(Number(b.dataset.i));
         lb.showModal();
+        document.body.classList.add('galeria-aberta');
       });
+      lb.addEventListener('close', () => document.body.classList.remove('galeria-aberta'));
       lb.querySelector(".lb-x").addEventListener("click", () => lb.close());
       lb.querySelector(".lb-ant").addEventListener("click", () => mostrar(atual - 1));
       lb.querySelector(".lb-prox").addEventListener("click", () => mostrar(atual + 1));
       lb.addEventListener("click", (ev) => { if (ev.target === lb) lb.close(); });
       lb.addEventListener("keydown", (ev) => {
-        if (ev.key === "ArrowLeft") mostrar(atual - 1);
-        if (ev.key === "ArrowRight") mostrar(atual + 1);
+        if (ev.key === "ArrowLeft") { ev.preventDefault(); mostrar(atual - 1); }
+        if (ev.key === "ArrowRight") { ev.preventDefault(); mostrar(atual + 1); }
       });
     })();
   </script>

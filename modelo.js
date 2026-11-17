@@ -12,12 +12,12 @@
   const previa = !!pvNome;
   let enderecoDemo = CONTATO_FICTICIO.endereco;
   if (previa) {
+    document.body.classList.add('personalizado');
     m.nome = pvNome;
     if (pvCor) {
       m.tema.cor = pvCor;
-      m.tema.cor2 = pvCor;
-      const [r, g, b] = [1, 3, 5].map((i) => parseInt(pvCor.slice(i, i + 2), 16));
-      m.tema.corTinta = 0.299 * r + 0.587 * g + 0.114 * b > 160 ? "#111111" : "#ffffff";
+      m.tema.cor2 = JORNADA.corLegivel(pvCor, m.tema.bg);
+      m.tema.corTinta = JORNADA.textoNaCor(pvCor);
     }
     if (pvCidade) {
       enderecoDemo = `Rua das Flores, 123 · Centro · ${pvCidade}`;
@@ -142,4 +142,9 @@
         ? `Prévia do site de ${esc(m.nome)} montada pela ${esc(CONFIG.nome)} a partir de um modelo. Textos, endereço, telefone, preços e pessoas são de exemplo, e as imagens foram geradas por inteligência artificial.`
         : `${esc(m.nome)} é um negócio fictício criado pela ${esc(CONFIG.nome)} para demonstração. Endereço, telefone, preços, pessoas e produtos não são reais, e as imagens foram geradas por inteligência artificial.`}</p>
     </div></footer>`;
+  // O aviso de demonstração tem altura variável no celular e com nomes longos.
+  const faixaDemo = document.querySelector('.demo-faixa');
+  const atualizarOffset = () => document.documentElement.style.setProperty('--demo-altura', faixaDemo.offsetHeight + 'px');
+  atualizarOffset();
+  if ('ResizeObserver' in window) new ResizeObserver(atualizarOffset).observe(faixaDemo);
 })();

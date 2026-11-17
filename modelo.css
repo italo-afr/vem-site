@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 130px; }
-body { margin: 0; font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--bg, #fff); color: var(--tinta, #111); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--demo-altura, 110px) + 20px); }
+body { margin: 0; font-family: "Plus Jakarta Sans", system-ui, sans-serif; background: var(--bg, #fff); color: var(--tinta, #111); line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-wrap: anywhere; }
 h1, h2, h3, p { margin: 0; }
 h1, h2, .m-marca { font-family: var(--fonte); letter-spacing: -0.01em; line-height: 1.08; text-wrap: balance; }
 h1 { font-size: clamp(2.3rem, 5.6vw, 4rem); }
@@ -8,7 +8,7 @@ h2 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); }
 h3 { font-size: 1.05rem; }
 a { color: inherit; }
 img { max-width: 100%; display: block; }
-:focus-visible { outline: 3px solid var(--cor); outline-offset: 2px; }
+:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 .m-wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
 
 /* Faixa de demonstração (da Vem Site, fora do tema do modelo) */
@@ -18,12 +18,23 @@ img { max-width: 100%; display: block; }
 .demo-acoes a:hover { text-decoration: underline; }
 .demo-acoes .demo-btn { background: #25d366; color: #06311b; padding: 6px 14px; border-radius: 999px; }
 .demo-acoes .demo-btn:hover { text-decoration: none; background: #1fbf5b; }
+.demo-faixa > span { overflow-wrap: anywhere; min-width: 0; }
+.demo-acoes { flex-wrap: wrap; }
+body.personalizado .m-btn-contorno { color: var(--cor2); border-color: var(--cor2); }
+.personalizado .t-marca small, .personalizado .m-menu h3, .personalizado .m-item-linha span:last-child,
+.personalizado .p-serifa .m-passo::before, .personalizado .t-fone strong,
+.personalizado .m-lista li::before { color: var(--cor2); }
+.personalizado.m-servicos .s-sobre .m-tag, .personalizado.m-servicos .s-sobre .m-numeros dt { color: inherit; }
+.personalizado.m-servicos .t-fone strong, .personalizado .m-contato dt { color: inherit; }
+.personalizado .m-check li::before { color: var(--bg); }
 
 /* Peças comuns */
 .m-aviso { background: var(--tinta); color: var(--bg); text-align: center; font-size: 0.85rem; font-weight: 600; padding: 8px 16px; }
 .m-topo { background: var(--bg); border-bottom: 1px solid color-mix(in srgb, var(--tinta) 12%, transparent); }
 .m-topo-in { display: flex; align-items: center; gap: 24px; min-height: 70px; }
-.m-marca { font-size: 1.4rem; font-weight: 700; text-decoration: none; }
+.m-marca { font-size: 1.4rem; font-weight: 700; text-decoration: none; min-width: 0; overflow-wrap: anywhere; }
+.m-topo-in > *, .m-rodape-topo > *, .t-marca { min-width: 0; }
+.m-topo-in > .m-btn { flex-shrink: 0; max-width: 100%; }
 .m-nav { display: flex; gap: 22px; margin-left: auto; align-items: center; }
 .m-nav a { text-decoration: none; color: var(--suave); font-weight: 500; font-size: 0.95rem; }
 .m-nav a:hover { color: var(--tinta); }

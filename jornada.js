@@ -25,5 +25,17 @@ const JORNADA = (() => {
     if (/^#[0-9a-f]{6}$/i.test(e.cor || '')) q.set('cor', e.cor);
     return q;
   }
-  return { ler, parametros };
+  const rgb = (hex) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+  const luminancia = (hex) => rgb(hex).map((v) => v / 255).map((v) => v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0);
+  const contraste = (a, b) => (Math.max(luminancia(a), luminancia(b)) + 0.05) / (Math.min(luminancia(a), luminancia(b)) + 0.05);
+  const textoNaCor = (hex) => contraste(hex, '#000000') > contraste(hex, '#ffffff') ? '#000000' : '#ffffff';
+  function corLegivel(hex, fundo) {
+    const origem = rgb(hex), destino = rgb(textoNaCor(fundo));
+    for (let passo = 0; passo <= 20; passo++) {
+      const cor = '#' + origem.map((v, i) => Math.round(v + (destino[i] - v) * passo / 20).toString(16).padStart(2, '0')).join('');
+      if (contraste(cor, fundo) >= 4.5) return cor;
+    }
+    return textoNaCor(fundo);
+  }
+  return { ler, parametros, textoNaCor, corLegivel, contraste };
 })();

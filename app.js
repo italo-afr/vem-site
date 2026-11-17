@@ -1,10 +1,8 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const brl = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-  const temWhatsApp = /^\d{12,13}$/.test(CONFIG.whatsapp) && !/0{8}/.test(CONFIG.whatsapp);
-  const wa = (texto) => temWhatsApp
-    ? "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto)
-    : "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Pedido pelo site Vem Site") + "&body=" + encodeURIComponent(texto);
+  const temWhatsApp = CONTATO.whatsappDisponivel;
+  const wa = CONTATO.url;
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   const estado = JORNADA.ler();
@@ -45,22 +43,7 @@
   $('#menuPrincipal').addEventListener('click', (ev) => { if (ev.target.closest('a')) fecharMenu(); });
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') { fecharMenu(); menuToggle.focus(); } });
 
-  function calcular(e) {
-    const tipo = TIPOS.find((t) => t.id === e.tipo);
-    const extras = tipo.extras ? e.extras : 0;
-    const adds = ADICIONAIS.filter((a) => e.adicionais.has(a.id));
-    const soma = (campo) => tipo[campo] + extras * PAGINA_EXTRA[campo] + adds.reduce((s, a) => s + a[campo], 0);
-    // Assinatura com plano maior: soma a diferença para o Básico.
-    const plano = PLANOS[e.plano || 0];
-    const difPlano = plano.preco - PLANOS[0].preco;
-    return {
-      tipo, extras, adds, plano, difPlano,
-      avista: soma("avista") + avistaDe(difPlano),
-      mensal: soma("mensal") + difPlano,
-      dias: soma("dias"),
-      paginas: tipo.paginas + extras,
-    };
-  }
+  const calcular = calcularOrcamento;
 
   // Cartão de exemplo do topo
   const ex = calcular({ tipo: "institucional", extras: 0, adicionais: new Set(["agendamento"]) });
@@ -72,9 +55,10 @@
   // Ramos
   function desenharRamos() {
     $("#ramoChips").innerHTML = RAMOS.map(
-      (r) => `<button type="button" role="tab" aria-selected="${r.id === estado.ramo}" data-ramo="${r.id}">${esc(r.nome)}</button>`
+      (r) => `<button type="button" role="tab" id="ramo-tab-${r.id}" aria-controls="ramoPainel" tabindex="${r.id === estado.ramo ? 0 : -1}" aria-selected="${r.id === estado.ramo}" data-ramo="${r.id}">${esc(r.nome)}</button>`
     ).join("");
     const r = RAMOS.find((x) => x.id === estado.ramo);
+    $('#ramoPainel').setAttribute('aria-labelledby', 'ramo-tab-' + r.id);
     $("#ramoPainel").innerHTML = `
       <div>
         <h3 style="font-size:1.5rem">${esc(r.titulo)}</h3>
@@ -102,6 +86,13 @@
     desenharRamos();
     $(`[data-ramo="${estado.ramo}"]`).focus();
   });
+  $('#ramoChips').addEventListener('keydown', (ev) => {
+    const i = RAMOS.findIndex((r) => r.id === estado.ramo);
+    const destinos = { ArrowRight: (i + 1) % RAMOS.length, ArrowLeft: (i + RAMOS.length - 1) % RAMOS.length, Home: 0, End: RAMOS.length - 1 };
+    if (!(ev.key in destinos)) return;
+    ev.preventDefault();
+    $(`[data-ramo="${RAMOS[destinos[ev.key]].id}"]`).click();
+  });
   $("#ramoPainel").addEventListener("click", (ev) => {
     if (!ev.target.closest("#ramoUsar")) return;
     const r = RAMOS.find((x) => x.id === estado.ramo);
@@ -115,7 +106,7 @@
 
   // Configurador
   function precoOpcao(o, prefixo) {
-    return prefixo + (estado.modo === "mensal" ? brl(o.mensal) + "/mês" : brl(o.avista));
+    return prefixo + (estado.modo === "mensal" ? brl(o.mensal) + "/mês" : 'aprox. ' + brl(o.avista));
   }
   function desenharOpcoes() {
     $("#tipoLista").innerHTML = TIPOS.map(
@@ -133,7 +124,7 @@
     ).join("");
     $("#planoLista").innerHTML = PLANOS.map((p, i) => {
       const dif = p.preco - PLANOS[0].preco;
-      const preco = i === 0 ? "incluso" : estado.modo === "mensal" ? "+ " + brl(dif) + "/mês" : "+ " + brl(avistaDe(dif));
+      const preco = i === 0 ? "incluso" : estado.modo === "mensal" ? "+ " + brl(dif) + "/mês" : "+ aprox. " + brl(avistaDe(dif));
       return `<label class="opcao">
         <input type="radio" name="plano" value="${i}" ${i === estado.plano ? "checked" : ""}>
         <span class="opcao-txt"><strong>${esc(p.nome)}</strong><span>${esc(p.itens.filter((t) => !/^Tudo do/.test(t)).slice(i === 0 ? 3 : 0, i === 0 ? 4 : 2).join(" · "))}</span></span>
@@ -150,7 +141,7 @@
     $("#pgNum").textContent = c.extras;
     $("#pgMenos").disabled = c.extras <= 0;
     $("#pgMais").disabled = c.extras >= MAX_EXTRAS;
-    $("#pgNota").textContent = `${c.tipo.paginas} já inclusas · cada extra ${mensal ? brl(PAGINA_EXTRA.mensal) + "/mês" : brl(PAGINA_EXTRA.avista)}`;
+    $("#pgNota").textContent = `${c.tipo.paginas} já inclusas · cada extra ${mensal ? brl(PAGINA_EXTRA.mensal) + "/mês" : 'aprox. ' + brl(PAGINA_EXTRA.avista)}`;
 
     const novoPreco = brl(mensal ? c.mensal : c.avista);
     $('#movelPreco').textContent = novoPreco + (mensal ? '/mês' : ' à vista');
@@ -164,7 +155,8 @@
     $("#rSufixo").textContent = mensal ? "/mês" : "";
     $("#rDet").textContent = mensal
       ? `12 meses, sem entrada. Total de ${brl(c.mensal * 12)}, com hospedagem e manutenção inclusas.`
-      : `Pagamento único, ${Math.round(DESCONTO_AVISTA * 100)}% abaixo da assinatura, com o primeiro ano de manutenção incluso. Sem fidelidade.`;
+      : `Pagamento único: ${Math.round(DESCONTO_AVISTA * 100)}% de desconto sobre as 12 mensalidades, com arredondamento final para dezenas. Primeiro ano de manutenção incluso. Sem fidelidade.`;
+    $('#arredondamentoNota').hidden = mensal;
     $("#rPrazo").textContent = c.dias + " dias";
     $("#rPaginas").textContent = c.paginas === 1 ? "1 página" : c.paginas + " páginas";
 
@@ -279,15 +271,8 @@
     ev.preventDefault();
     const descricao = $('#consertoDescricao').value.trim();
     const entrada = $('#consertoUrl').value.trim();
-    let url = '';
-    let urlValida = !entrada;
-    if (entrada) {
-      try {
-        const candidata = new URL(/^[a-z][a-z\d+.-]*:/i.test(entrada) ? entrada : 'https://' + entrada);
-        urlValida = ['https:', 'http:'].includes(candidata.protocol) && candidata.hostname.includes('.') && !candidata.username && !candidata.password && !/\s/.test(entrada);
-        if (urlValida) url = candidata.href;
-      } catch { urlValida = false; }
-    }
+    const url = CONTATO.normalizarSite(entrada);
+    const urlValida = !entrada || Boolean(url);
     const descricaoValida = descricao.length >= 10 && descricao.length <= 1000;
     $('#consertoUrlErro').hidden = urlValida;
     $('#consertoUrl').setAttribute('aria-invalid', String(!urlValida));
@@ -313,7 +298,7 @@
   $('#consertoCopiar').addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(textoConserto);
-      $('#consertoCopiaStatus').textContent = 'Texto copiado. Cole no seu e-mail para enviar.';
+      $('#consertoCopiaStatus').textContent = 'Texto copiado. Cole no canal de contato que preferir para enviar.';
     } catch {
       $('#consertoCopiaStatus').textContent = 'Não foi possível copiar automaticamente. Selecione o texto acima e copie.';
     }
@@ -394,8 +379,8 @@
   const pareceIngles = (t) => /\b(the|is|are|uses?|do not|does not|have|has|elements?|should|avoid|ensure)\b/i.test(t);
   const temChave = Boolean(CONFIG.pagespeedKey);
   $("#raioxTexto").textContent = temChave
-    ? "Informe o endereço e veja em até 1 minuto a nota do seu site em velocidade, Google, segurança e acessibilidade, com o que vale consertar e quanto custa."
-    : "Informe o endereço. Em até 1 dia útil você recebe pelo WhatsApp a nota do seu site em velocidade, Google, segurança e acessibilidade, com o que vale consertar e quanto custa.";
+    ? "Informe o endereço para analisar velocidade, boas práticas, acessibilidade e ajustes para o Google. A análise pode levar até 2 minutos e não substitui uma avaliação de segurança."
+    : `Informe o endereço. Peça a análise por ${temWhatsApp ? 'WhatsApp' : 'e-mail'} e combinamos o retorno com você.`;
   if (!temChave) $("#raioxBtn").textContent = "Pedir raio-X";
 
   const faixa = (n) => (n >= 90 ? ["rx-bom", "Bom"] : n >= 50 ? ["rx-medio", "Precisa melhorar"] : ["rx-ruim", "Ruim"]);
@@ -486,33 +471,33 @@
   function raioxFalhou(url) {
     $("#raioxSaida").innerHTML = `
       <h3>Não conseguimos analisar esse site agora</h3>
-      <p style="color:var(--suave);margin-top:6px">Confira se o endereço está certo e tente de novo. Se preferir, peça pelo WhatsApp e enviamos o raio-X em até 1 dia útil.</p>
-      <div class="acoes"><a class="btn" target="_blank" rel="noopener" href="${esc(wa("Olá! Quero o raio-X grátis do meu site: " + url))}">Pedir pelo WhatsApp</a></div>`;
+      <p style="color:var(--suave);margin-top:6px">Confira o endereço e tente novamente. Você também pode pedir a análise por ${temWhatsApp ? 'WhatsApp' : 'e-mail'}.</p>
+      <div class="acoes"><a class="btn" target="_blank" rel="noopener" href="${esc(wa("Olá! Quero o raio-X grátis do meu site: " + url))}">Pedir por ${temWhatsApp ? 'WhatsApp' : 'e-mail'}</a></div>`;
     $("#raioxSaida").hidden = false;
   }
 
   $("#raioxForm").addEventListener("submit", async (ev) => {
     ev.preventDefault();
-    let url = $("#raioxUrl").value.trim();
-    const valido = /^(https?:\/\/)?[a-z0-9-]+(\.[a-z0-9-]+)+(\/\S*)?$/i.test(url);
+    const url = CONTATO.normalizarSite($("#raioxUrl").value);
+    const valido = Boolean(url);
     $("#raioxErro").hidden = valido;
     if (!valido) return $("#raioxUrl").focus();
     if (!temChave) return window.open(wa("Olá! Quero o raio-X grátis do meu site: " + url), "_blank", "noopener");
-    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
 
     const btn = $("#raioxBtn");
     btn.disabled = true;
     btn.textContent = "Analisando…";
-    $("#raioxStatus").textContent = "Abrindo seu site em um celular simulado. Isso pode levar até 1 minuto.";
+    $("#raioxStatus").textContent = "Analisando seu site em um celular simulado. Isso pode levar até 2 minutos.";
     $("#raioxStatus").hidden = false;
     $("#raioxSaida").hidden = true;
     try {
       const api = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?strategy=mobile&locale=pt-BR" +
         RX_CATS.map(([id]) => "&category=" + id).join("") +
         "&url=" + encodeURIComponent(url) + "&key=" + encodeURIComponent(CONFIG.pagespeedKey);
-      const resp = await fetch(api);
+      const resp = await fetch(api, { signal: AbortSignal.timeout(120000) });
       const dados = await resp.json();
-      if (!resp.ok || !dados.lighthouseResult) throw new Error("sem resultado");
+      if (!resp.ok || !dados.lighthouseResult || dados.lighthouseResult.runtimeError ||
+          !RX_CATS.every(([id]) => Number.isFinite(dados.lighthouseResult.categories?.[id]?.score))) throw new Error("sem resultado completo");
       mostrarRaioX(url, dados.lighthouseResult);
     } catch (e) {
       raioxFalhou(url);
@@ -661,25 +646,18 @@
     const alvos = document.querySelectorAll(
       ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li, .passos > li, .comp, .sis, .previa-form"
     );
-    let faltam = [...alvos];
-    faltam.forEach((el) => {
+    alvos.forEach((el) => {
       const i = [...el.parentElement.children].indexOf(el);
       el.style.setProperty("--i", Math.min(i, 5));
       el.classList.add("rev");
     });
-    const revelar = () => {
-      const limite = innerHeight * 0.94;
-      faltam = faltam.filter((el) => {
-        if (el.getBoundingClientRect().top > limite) return true;
-        el.classList.add("visto");
-        return false;
-      });
-      if (!faltam.length) { removeEventListener("scroll", revelar); removeEventListener("resize", revelar); }
-    };
-    addEventListener("scroll", revelar, { passive: true });
-    addEventListener("resize", revelar);
-    document.documentElement.classList.add("anima");
-    revelar();
+    if ('IntersectionObserver' in window) {
+      const entradas = new IntersectionObserver((items, observer) => {
+        items.forEach((item) => { if (item.isIntersecting) { item.target.classList.add('visto'); observer.unobserve(item.target); } });
+      }, { rootMargin: '0px 0px -6% 0px' });
+      alvos.forEach((el) => entradas.observe(el));
+      document.documentElement.classList.add('anima');
+    }
 
     const vis = $("#heroVis");
     const cartao = vis.querySelector(".hero-card");

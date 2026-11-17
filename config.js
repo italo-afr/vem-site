@@ -39,6 +39,19 @@ const DESCONTO_AVISTA = 0.1;
 const avistaDe = (mensal) => Math.round((mensal * 12 * (1 - DESCONTO_AVISTA)) / 10) * 10;
 [...TIPOS, ...ADICIONAIS, PAGINA_EXTRA].forEach((x) => (x.avista = avistaDe(x.mensal)));
 
+function calcularOrcamento(e) {
+  const tipo = TIPOS.find((t) => t.id === e.tipo);
+  const extras = tipo.extras ? e.extras : 0;
+  const adds = ADICIONAIS.filter((a) => e.adicionais.has(a.id));
+  const plano = PLANOS[e.plano || 0];
+  const difPlano = plano.preco - PLANOS[0].preco;
+  const mensal = tipo.mensal + extras * PAGINA_EXTRA.mensal + adds.reduce((s, a) => s + a.mensal, 0) + difPlano;
+  // O desconto e o arredondamento são aplicados uma única vez ao total.
+  return { tipo, extras, adds, plano, difPlano, mensal, avista: avistaDe(mensal),
+    dias: tipo.dias + extras * PAGINA_EXTRA.dias + adds.reduce((s, a) => s + a.dias, 0),
+    paginas: tipo.paginas + extras };
+}
+
 const AVULSOS = [
   { id: "lento", nome: "Site lento", desc: "Otimização de velocidade", preco: 450, prazo: "3 dias úteis" },
   { id: "google", nome: "Aparecer melhor no Google", desc: "Títulos, descrições e ajustes técnicos", preco: 390, prazo: "3 dias úteis" },
