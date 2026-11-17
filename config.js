@@ -1,8 +1,7 @@
 // Dados da empresa. Troque aqui e o site inteiro atualiza.
-// ATENÇÃO: o WhatsApp abaixo ainda é provisório.
 const CONFIG = {
   nome: "Vem Site",
-  whatsapp: "5500000000000", // DDI + DDD + número, só dígitos
+  whatsapp: "5519991369828", // DDI + DDD + número, só dígitos
   email: "vemsitecontato@gmail.com",
   // Chave gratuita da API PageSpeed Insights (Google Cloud). Restrinja a chave ao
   // domínio do site. Vazia = o raio-X vira pedido manual pelo WhatsApp.
