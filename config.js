@@ -3,6 +3,7 @@ const CONFIG = {
   nome: "Vem Site",
   whatsapp: "5519991369828", // DDI + DDD + número, só dígitos
   email: "vemsitecontato@gmail.com",
+  linkedin: "https://www.linkedin.com/company/vemsite/",
   // Chave gratuita da API PageSpeed Insights (Google Cloud). Restrinja a chave ao
   // domínio do site. Vazia = o raio-X vira pedido manual pelo WhatsApp.
   pagespeedKey: "AIzaSyD3LGKyQCyFFr-2ylO8D7OWY3Tbv6Ws1nY",
