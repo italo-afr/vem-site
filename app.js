@@ -244,10 +244,80 @@
       <p>${esc(a.desc)}</p>
       <div class="avulso-pe">
         <div><div class="avulso-preco">${brl(a.preco)}</div><div class="avulso-prazo">${esc(a.prazo)}</div></div>
-        <a target="_blank" rel="noopener" href="${esc(wa(`Olá! Preciso do serviço "${a.nome}" (${brl(a.preco)}).`))}">Pedir →</a>
+        <a href="#consertoPedido" data-conserto="${esc(a.nome)}">Pedir →</a>
       </div>
     </article>`
-  ).join("");
+  ).join("") + `<article class="avulso avulso-personalizado"><span class="avulso-tag">Do seu jeito</span><h3>Não encontrou o que precisa?</h3><p>Conte o problema com suas palavras. A gente avalia e envia uma proposta.</p><div class="avulso-pe"><div><div class="avulso-preco">Sob avaliação</div><div class="avulso-prazo">Preço e prazo antes de aprovar</div></div><a href="#consertoPedido" data-conserto="">Contar →</a></div></article>`;
+
+  // Pedido de conserto: rascunho local, enviado somente pelo cliente no canal escolhido.
+  let textoConserto = '';
+  function atualizarServicoConserto() {
+    const servico = AVULSOS.find((a) => a.nome === $('#consertoServico').value);
+    $('#consertoSelecao').hidden = !servico;
+    $('#consertoSelecao').textContent = servico
+      ? `${servico.nome}: ${brl(servico.preco)} · ${servico.prazo}. O escopo é confirmado após avaliar o seu site.` : '';
+  }
+  $('#avulsosLista').addEventListener('click', (ev) => {
+    const link = ev.target.closest('[data-conserto]');
+    if (!link) return;
+    $('#consertoServico').value = link.dataset.conserto;
+    atualizarServicoConserto();
+    $('#consertoRevisao').hidden = true;
+  });
+  $('#consertoForm').addEventListener('input', () => {
+    $('#consertoContador').textContent = `${$('#consertoDescricao').value.length}/1000`;
+    $('#consertoRevisao').hidden = true;
+    $('#consertoCopiaStatus').textContent = '';
+    atualizarServicoConserto();
+  });
+  if (temWhatsApp) {
+    $('#consertoEnviar').textContent = 'Preparar pedido pelo WhatsApp';
+    $('#consertoAbrir').textContent = 'Abrir WhatsApp com o pedido →';
+    $('#consertoCanal').textContent = 'O pedido abre no WhatsApp para você revisar e enviar. Não há cobrança nesta etapa.';
+  }
+  $('#consertoForm').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const descricao = $('#consertoDescricao').value.trim();
+    const entrada = $('#consertoUrl').value.trim();
+    let url = '';
+    let urlValida = !entrada;
+    if (entrada) {
+      try {
+        const candidata = new URL(/^[a-z][a-z\d+.-]*:/i.test(entrada) ? entrada : 'https://' + entrada);
+        urlValida = ['https:', 'http:'].includes(candidata.protocol) && candidata.hostname.includes('.') && !candidata.username && !candidata.password && !/\s/.test(entrada);
+        if (urlValida) url = candidata.href;
+      } catch { urlValida = false; }
+    }
+    const descricaoValida = descricao.length >= 10 && descricao.length <= 1000;
+    $('#consertoUrlErro').hidden = urlValida;
+    $('#consertoUrl').setAttribute('aria-invalid', String(!urlValida));
+    $('#consertoDescricaoErro').hidden = descricaoValida;
+    $('#consertoDescricao').setAttribute('aria-invalid', String(!descricaoValida));
+    if (!urlValida || !descricaoValida) {
+      $('#consertoRevisao').hidden = true;
+      return (!urlValida ? $('#consertoUrl') : $('#consertoDescricao')).focus();
+    }
+    const servico = AVULSOS.find((a) => a.nome === $('#consertoServico').value);
+    textoConserto = [
+      'Olá! Preciso de ajuda com meu site.',
+      `Serviço: ${servico ? servico.nome : 'Avaliação de outro problema'}`,
+      ...(servico ? [`Referência na tabela: ${brl(servico.preco)} · ${servico.prazo} (escopo a confirmar).`] : []),
+      `Site: ${url || 'não informado'}`,
+      '', 'O que preciso resolver:', descricao,
+      '', 'Gostaria de receber a avaliação e combinar o preço e o prazo antes de começar.',
+    ].join('\n');
+    $('#consertoRevisaoTexto').textContent = textoConserto;
+    $('#consertoAbrir').href = wa(textoConserto);
+    $('#consertoRevisao').hidden = false;
+  });
+  $('#consertoCopiar').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(textoConserto);
+      $('#consertoCopiaStatus').textContent = 'Texto copiado. Cole no seu e-mail para enviar.';
+    } catch {
+      $('#consertoCopiaStatus').textContent = 'Não foi possível copiar automaticamente. Selecione o texto acima e copie.';
+    }
+  });
 
   // FAQ
   // As dúvidas já são publicadas em HTML pelo gerador, inclusive para robôs sem JS.
@@ -491,19 +561,45 @@
   const CORES = [
     ["#0f8f7e", "Verde-água"], ["#2457e6", "Azul"], ["#7c3aed", "Roxo"],
     ["#c2410c", "Terracota"], ["#be185d", "Rosa"], ["#1f2937", "Grafite"],
+    ["#15803d", "Verde-floresta"], ["#65a30d", "Verde-lima"], ["#0891b2", "Turquesa"],
+    ["#0f172a", "Azul-marinho"], ["#4f46e5", "Índigo"], ["#a855f7", "Lilás"],
+    ["#dc2626", "Vermelho"], ["#f97316", "Laranja"], ["#eab308", "Amarelo"],
+    ["#a16207", "Dourado"], ["#78350f", "Café"], ["#f5e6d3", "Areia"],
   ];
   $("#pvRamo").innerHTML = RAMOS.map((r) => `<option value="${r.id}"${r.id === estado.ramo ? " selected" : ""}>${esc(r.nome)}</option>`).join("");
   $("#pvCores").innerHTML = CORES.map(([c, n], i) =>
-    `<label class="previa-cor" style="--c:${c}"><input type="radio" name="pvCor" value="${c}"${c === estado.cor ? " checked" : ""}><span class="oculto">${n}</span></label>`
+    `<label class="previa-cor" style="--c:${c}" title="${n}"><input type="radio" name="pvCor" value="${c}"${c.toLowerCase() === estado.cor.toLowerCase() ? " checked" : ""}><span class="oculto">${n}</span></label>`
   ).join("");
   $('#pvNome').value = estado.nome;
   $('#pvCidade').value = estado.cidade;
-  if (!$('[name=pvCor]:checked')) $('[name=pvCor]').checked = true;
+  $('#pvCorPersonalizada').value = estado.cor;
+  $('#pvCorHex').value = estado.cor.toUpperCase();
+  if (!$('[name=pvCor]:checked')) $('#pvCorLivre').checked = true;
+  const corDaPrevia = () => $('[name=pvCor]:checked')?.value === 'personalizada'
+    ? $('#pvCorPersonalizada').value : ($('[name=pvCor]:checked')?.value || estado.cor);
+  $('#pvCorPersonalizada').addEventListener('input', () => {
+    $('#pvCorLivre').checked = true;
+    $('#pvCorHex').value = $('#pvCorPersonalizada').value.toUpperCase();
+    $('#pvCorErro').hidden = true;
+    $('#pvCorHex').setAttribute('aria-invalid', 'false');
+  });
+  $('#pvCorHex').addEventListener('input', () => {
+    $('#pvCorLivre').checked = true;
+    const valor = $('#pvCorHex').value.trim();
+    const valido = /^#[0-9a-f]{6}$/i.test(valor);
+    $('#pvCorErro').hidden = valido;
+    $('#pvCorHex').setAttribute('aria-invalid', String(!valido));
+    if (valido) $('#pvCorPersonalizada').value = valor;
+  });
   function atualizarMiniPrevia() {
     $('#pvMiniNome').textContent = $('#pvNome').value.trim() || 'O nome do seu negócio';
     $('#pvMiniCidade').textContent = $('#pvCidade').value.trim() || 'Sua presença na internet começa aqui.';
     $('#pvMiniRamo').textContent = RAMOS.find((r) => r.id === $('#pvRamo').value)?.nome || '';
-    $('#previaViva').style.setProperty('--pv-cor', $('[name=pvCor]:checked')?.value || estado.cor);
+    const cor = corDaPrevia();
+    $('#previaViva').style.setProperty('--pv-cor', cor);
+    const nomeCor = CORES.find(([c]) => c.toLowerCase() === cor.toLowerCase())?.[1] || 'Cor personalizada';
+    $('#pvCorNome').textContent = nomeCor + ' · ' + cor.toUpperCase();
+    if (!$('#pvCorLivre').checked) { $('#pvCorErro').hidden = true; $('#pvCorHex').setAttribute('aria-invalid', 'false'); }
   }
   $('#previaForm').addEventListener('input', atualizarMiniPrevia);
   $('#pvRamo').addEventListener('change', atualizarMiniPrevia);
@@ -513,11 +609,16 @@
     const nome = $("#pvNome").value.trim();
     $("#pvErro").hidden = !!nome;
     if (!nome) return $("#pvNome").focus();
+    if ($('#pvCorLivre').checked && !/^#[0-9a-f]{6}$/i.test($('#pvCorHex').value.trim())) {
+      $('#pvCorErro').hidden = false;
+      $('#pvCorHex').setAttribute('aria-invalid', 'true');
+      return $('#pvCorHex').focus();
+    }
     const ramo = RAMOS.find((r) => r.id === $('#pvRamo').value);
     if (ramo.id !== estado.ramo) {
       estado.tipo = ramo.tipo; estado.adicionais = new Set(ramo.adicionais); estado.extras = 0;
     }
-    Object.assign(estado, { ramo: ramo.id, nome, cidade: $('#pvCidade').value.trim(), cor: $('[name=pvCor]:checked').value });
+    Object.assign(estado, { ramo: ramo.id, nome, cidade: $('#pvCidade').value.trim(), cor: corDaPrevia() });
     const p = JORNADA.parametros(estado);
     p.set('m', estado.ramo);
     location.href = "modelo.html?" + p;

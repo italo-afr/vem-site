@@ -167,6 +167,16 @@
           <fieldset class="previa-cores">
             <legend>Cor principal</legend>
             <div id="pvCores"></div>
+            <div class="cor-personalizada">
+              <label class="cor-propria"><input type="radio" name="pvCor" id="pvCorLivre" value="personalizada"> Usar outra cor</label>
+              <div class="cor-campos">
+                <label class="cor-seletor"><span class="oculto">Escolher cor personalizada</span><input id="pvCorPersonalizada" type="color" value="#0f8f7e"></label>
+                <div><label for="pvCorHex">Código da sua cor</label><input id="pvCorHex" type="text" value="#0F8F7E" maxlength="7" placeholder="#A855F7" spellcheck="false" autocomplete="off" aria-describedby="pvCorAjuda pvCorErro"></div>
+              </div>
+              <p id="pvCorAjuda">Escolha no seletor ou cole o código da sua marca, como #A855F7.</p>
+              <p class="erro" id="pvCorErro" hidden>Use # e seis letras de A a F ou números, como #A855F7.</p>
+            </div>
+            <p class="cor-atual" id="pvCorNome"></p>
           </fieldset>
           <button class="btn btn-cheio" type="submit">Ver a prévia do meu site</button>
           <p class="erro" id="pvErro" role="alert" hidden>Digite o nome do negócio.</p>
@@ -269,8 +279,10 @@
 
     <section id="avulsos" class="sec sec-alt">
       <div class="wrap">
-        <h2>Consertos com preço fixo</h2>
-        <p class="sub">Seu site está com problema? Escolha o serviço. Vale para qualquer site, mesmo que não tenha sido feito por nós.</p>
+        <h2>O que precisa melhorar no seu site?</h2>
+        <p class="sub">Escolha um serviço com preço na tela ou conte o que está acontecendo. Atendemos também sites feitos por outras pessoas.</p>
+        <div class="conserto-atalhos"><a href="#consertoPedido" class="btn">Quero explicar meu problema →</a><a href="#raiox">Prefiro começar pelo raio-X grátis</a></div>
+        <p class="conserto-nota">Os valores abaixo são para o serviço descrito. Conferimos o seu site e combinamos o escopo antes de começar. Se precisar de algo além, você recebe o orçamento primeiro.</p>
         <div class="avulsos" id="avulsosLista"><!-- AVULSOS-INICIO -->
 <article class="avulso"><h3>Site lento</h3><p>Otimização de velocidade</p><div class="avulso-pe"><div><div class="avulso-preco">R$ 450</div><div class="avulso-prazo">3 dias úteis</div></div><a href="mailto:vemsitecontato@gmail.com?subject=Pedido%20pelo%20site%20Vem%20Site&amp;body=Ol%C3%A1%21%20Preciso%20do%20servi%C3%A7o%20Site%20lento.">Pedir →</a></div></article>
 <article class="avulso"><h3>Aparecer melhor no Google</h3><p>Títulos, descrições e ajustes técnicos</p><div class="avulso-pe"><div><div class="avulso-preco">R$ 390</div><div class="avulso-prazo">3 dias úteis</div></div><a href="mailto:vemsitecontato@gmail.com?subject=Pedido%20pelo%20site%20Vem%20Site&amp;body=Ol%C3%A1%21%20Preciso%20do%20servi%C3%A7o%20Aparecer%20melhor%20no%20Google.">Pedir →</a></div></article>
@@ -279,7 +291,28 @@
 <article class="avulso"><h3>Adequação à LGPD</h3><p>Aviso de cookies e política de privacidade</p><div class="avulso-pe"><div><div class="avulso-preco">R$ 350</div><div class="avulso-prazo">3 dias úteis</div></div><a href="mailto:vemsitecontato@gmail.com?subject=Pedido%20pelo%20site%20Vem%20Site&amp;body=Ol%C3%A1%21%20Preciso%20do%20servi%C3%A7o%20Adequa%C3%A7%C3%A3o%20%C3%A0%20LGPD.">Pedir →</a></div></article>
 <article class="avulso"><h3>Pacote de 5 ajustes</h3><p>Textos, imagens, telefones e preços</p><div class="avulso-pe"><div><div class="avulso-preco">R$ 290</div><div class="avulso-prazo">2 dias úteis</div></div><a href="mailto:vemsitecontato@gmail.com?subject=Pedido%20pelo%20site%20Vem%20Site&amp;body=Ol%C3%A1%21%20Preciso%20do%20servi%C3%A7o%20Pacote%20de%205%20ajustes.">Pedir →</a></div></article>
 <article class="avulso"><h3>Google Meu Negócio</h3><p>Criação e configuração do perfil</p><div class="avulso-pe"><div><div class="avulso-preco">R$ 250</div><div class="avulso-prazo">3 dias úteis</div></div><a href="mailto:vemsitecontato@gmail.com?subject=Pedido%20pelo%20site%20Vem%20Site&amp;body=Ol%C3%A1%21%20Preciso%20do%20servi%C3%A7o%20Google%20Meu%20Neg%C3%B3cio.">Pedir →</a></div></article>
+<article class="avulso avulso-personalizado"><span class="avulso-tag">Do seu jeito</span><h3>Não encontrou o que precisa?</h3><p>Conte o problema com suas palavras. A gente avalia e envia uma proposta.</p><div class="avulso-pe"><div><div class="avulso-preco">Sob avaliação</div><div class="avulso-prazo">Preço e prazo antes de aprovar</div></div><a href="#consertoPedido">Contar →</a></div></article>
 <!-- AVULSOS-FIM --></div>
+        <div class="conserto-pedido" id="consertoPedido">
+          <div class="conserto-intro"><p class="sobre">Sem termos técnicos</p><h3>Conte o que está acontecendo</h3><p>Um botão parou? O site ficou estranho no celular? Não encontrou o serviço na lista? Descreva com suas palavras.</p><ol><li>Você conta o problema e informa o site.</li><li>A gente avalia o que precisa ser feito.</li><li>Você recebe preço e prazo antes de aprovar.</li></ol><p class="nota">Não envie senhas, códigos de acesso ou dados de clientes.</p></div>
+          <form id="consertoForm" class="conserto-form" novalidate>
+            <div><label for="consertoServico">Em que podemos ajudar?</label><select id="consertoServico"><option value="">Não sei / outro problema</option><!-- CONSERTO-OPCOES-INICIO -->
+<option value="Site lento">Site lento</option>
+<option value="Aparecer melhor no Google">Aparecer melhor no Google</option>
+<option value="Site fora do ar ou invadido">Site fora do ar ou invadido</option>
+<option value="Troca de hospedagem">Troca de hospedagem</option>
+<option value="Adequação à LGPD">Adequação à LGPD</option>
+<option value="Pacote de 5 ajustes">Pacote de 5 ajustes</option>
+<option value="Google Meu Negócio">Google Meu Negócio</option>
+<!-- CONSERTO-OPCOES-FIM --></select></div>
+            <div><label for="consertoUrl">Endereço do site <span>(opcional)</span></label><input id="consertoUrl" type="text" inputmode="url" autocomplete="url" maxlength="250" placeholder="www.seusite.com.br" aria-describedby="consertoUrlErro"><p class="erro" id="consertoUrlErro" hidden>Informe um endereço como www.seusite.com.br ou deixe em branco.</p></div>
+            <div><label for="consertoDescricao">O que você precisa resolver?</label><textarea id="consertoDescricao" rows="5" minlength="10" maxlength="1000" required placeholder="Ex.: no celular, o botão de contato não abre. Percebi isso depois de atualizar o site." aria-describedby="consertoDescricaoErro consertoContador"></textarea><div class="conserto-contagem"><p class="erro" id="consertoDescricaoErro" hidden>Conte um pouco mais sobre o problema (pelo menos 10 caracteres).</p><span id="consertoContador">0/1000</span></div></div>
+            <p class="conserto-selecao" id="consertoSelecao" hidden></p>
+            <button type="submit" class="btn btn-cheio" id="consertoEnviar">Preparar pedido por e-mail</button>
+            <p class="nota" id="consertoCanal">O pedido abre no seu aplicativo de e-mail para você revisar e enviar. Não há cobrança nesta etapa.</p>
+            <div id="consertoRevisao" class="conserto-revisao" hidden><strong>Seu pedido está pronto para revisar</strong><p id="consertoRevisaoTexto"></p><a class="btn btn-cheio" id="consertoAbrir" href="mailto:vemsitecontato@gmail.com">Abrir e-mail com o pedido →</a><button type="button" class="conserto-copiar" id="consertoCopiar">Copiar texto do pedido</button><p class="nota" id="consertoCopiaStatus" role="status"></p><p class="nota">Se não abrir, envie o texto para <a href="mailto:vemsitecontato@gmail.com">vemsitecontato@gmail.com</a>.</p></div>
+          </form>
+        </div>
       </div>
     </section>
 

@@ -554,3 +554,51 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
   .jornada a, .caminhos > a, .pv-conteudo, .pv-mini-btn { transition: none; }
   .caminhos > a:hover { transform: none; }
 }
+
+/* Paleta ampliada e cor da marca. */
+.previa-cores #pvCores { display: grid; grid-template-columns: repeat(9, 40px); gap: 10px; }
+.previa-cores .cor-personalizada { display: block; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--linha); }
+.previa-form .cor-propria { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; }
+.cor-propria input { width: 18px; height: 18px; accent-color: var(--cor); }
+.cor-campos { display: flex; gap: 12px; align-items: end; }
+.cor-campos > div { flex: 1; min-width: 0; }
+.previa-form .cor-campos label { font-size: .8rem; }
+.cor-seletor { flex: 0 0 48px; }
+.cor-seletor input { width: 48px; height: 46px; padding: 3px; border: 1px solid var(--linha); border-radius: 12px; background: white; cursor: pointer; }
+.cor-personalizada > p { font-size: .8rem; margin-top: 8px; color: var(--suave); }
+.cor-personalizada > .erro { color: #b91c1c; }
+.cor-atual { font-size: .85rem; color: var(--suave); margin-top: 12px; }
+.previa-form #pvCorHex { font-family: ui-monospace, monospace; text-transform: uppercase; }
+
+/* Consertos com orientação e pedido escrito pelo cliente. */
+.conserto-atalhos { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin-top: 24px; }
+.conserto-atalhos > a:not(.btn) { font-size: .9rem; text-underline-offset: 4px; }
+.conserto-nota { color: var(--suave); max-width: 88ch; font-size: .88rem; margin-top: 20px; }
+.avulso-personalizado { background: var(--cor-claro); border-color: #c5c2f5; }
+.avulso-tag { width: fit-content; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--cor-esc); margin-bottom: 6px; }
+.avulso-personalizado .avulso-pe { flex-wrap: wrap; gap: 12px; }
+.conserto-pedido { display: grid; grid-template-columns: .85fr 1.15fr; gap: 40px; align-items: start; margin-top: 40px; padding-top: 36px; border-top: 1px solid var(--linha); scroll-margin-top: 105px; }
+.conserto-intro h3 { font-size: 1.8rem; line-height: 1.2; letter-spacing: -.03em; }
+.conserto-intro > p:not(.sobre) { margin-top: 14px; color: var(--suave); }
+.conserto-intro ol { color: var(--suave); margin: 22px 0; padding-left: 22px; }
+.conserto-intro li { margin-bottom: 10px; padding-left: 4px; }
+.conserto-form { display: grid; gap: 18px; padding: 26px; border-radius: 24px; background: white; border: 1px solid var(--linha); min-width: 0; }
+.conserto-form label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 8px; }
+.conserto-form label span { font-weight: 400; color: var(--suave); }
+.conserto-form input, .conserto-form select, .conserto-form textarea { width: 100%; min-width: 0; padding: 12px 14px; background: white; border: 1.5px solid var(--linha); color: var(--tinta); border-radius: 12px; font: inherit; font-size: .94rem; }
+.conserto-form textarea { resize: vertical; min-height: 140px; }
+.conserto-form [aria-invalid="true"], #pvCorHex[aria-invalid="true"] { border-color: #b91c1c; }
+.conserto-contagem { display: flex; justify-content: space-between; gap: 10px; align-items: start; margin-top: 6px; }
+#consertoContador { color: var(--suave); font-size: .75rem; margin-left: auto; white-space: nowrap; }
+.conserto-form .nota, .conserto-form .erro { font-size: .82rem; }
+.conserto-selecao { padding: 12px 14px; border-radius: 12px; background: var(--cor-claro); font-size: .85rem; color: var(--cor-esc); }
+.conserto-revisao { display: grid; gap: 14px; border-top: 1px solid var(--linha); padding-top: 20px; }
+#consertoRevisaoTexto { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--suave); font-size: .86rem; padding: 16px; border-radius: 12px; background: var(--fundo); max-height: 320px; overflow-y: auto; }
+.conserto-copiar { padding: 10px 16px; border: 1px solid var(--linha); border-radius: 999px; background: white; color: var(--cor-esc); font-weight: 700; }
+@media (max-width: 1100px) { .previa-cores #pvCores { grid-template-columns: repeat(6, 40px); } }
+@media (max-width: 900px) { .conserto-pedido { grid-template-columns: 1fr; gap: 24px; } }
+@media (max-width: 560px) {
+  .previa-cores #pvCores { grid-template-columns: repeat(auto-fit, 36px); gap: 9px; }
+  .previa-cor { width: 36px; height: 36px; }
+  .conserto-form { padding: 18px; }
+}
