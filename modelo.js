@@ -1,6 +1,6 @@
 (function () {
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const foto = (n) => `img/modelos/${n}.jpg`;
+  const foto = (n) => `img/modelos/${n}.webp`;
   const id = new URLSearchParams(location.search).get("m");
   const m = structuredClone(MODELOS.find((x) => x.id === id) || MODELOS[0]);
 
@@ -30,16 +30,17 @@
   document.title = `${m.nome} · modelo de demonstração ${CONFIG.nome}`;
   document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
   document.getElementById("demoNome").textContent = m.nome;
-  document.getElementById("demoQuero").href = `index.html?ramo=${m.id}#montar`;
+  const jornada = JORNADA.ler();
+  jornada.ramo = m.id;
+  const voltarOrcamento = 'index.html?' + JORNADA.parametros(jornada) + '#montar';
+  document.getElementById("demoQuero").href = voltarOrcamento;
   if (previa) {
     document.title = `${m.nome} · prévia ${CONFIG.nome}`;
     document.querySelector(".demo-faixa > span").innerHTML =
       `Prévia do site de <strong>${esc(m.nome)}</strong>, montada pela <strong>${esc(CONFIG.nome)}</strong>. Textos, fotos e preços são de exemplo.`;
     const quero = document.getElementById("demoQuero");
-    quero.textContent = "Quero este site";
-    quero.href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(`Olá! Vi a prévia do site de ${m.nome} e quero este site.`);
-    quero.target = "_blank";
-    quero.rel = "noopener";
+    quero.textContent = "Ver preço da minha prévia →";
+    quero.href = voltarOrcamento;
   }
 
   const numeros = (ns) => (ns ? `<dl class="m-numeros">${ns.map((n) => `<div><dt>${esc(n.n)}</dt><dd>${esc(n.t)}</dd></div>`).join("")}</dl>` : "");
@@ -131,7 +132,7 @@
         <div class="m-caixa">
           <h3>${esc(m.cta)}</h3>
           <p>No site de verdade, este botão abre o WhatsApp do negócio com a mensagem pronta. Aqui é só uma demonstração.</p>
-          <a class="m-btn" href="index.html?ramo=${m.id}#montar">Quero um site assim</a>
+          <a class="m-btn" href="${esc(voltarOrcamento)}">Ver preço deste site →</a>
         </div>
       </div></section>
     </main>

@@ -1,15 +1,19 @@
 (function () {
   const $ = (s) => document.querySelector(s);
   const brl = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
-  const wa = (texto) => "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto);
+  const temWhatsApp = /^\d{12,13}$/.test(CONFIG.whatsapp) && !/0{8}/.test(CONFIG.whatsapp);
+  const wa = (texto) => temWhatsApp
+    ? "https://wa.me/" + CONFIG.whatsapp + "?text=" + encodeURIComponent(texto)
+    : "mailto:" + CONFIG.email + "?subject=" + encodeURIComponent("Pedido pelo site Vem Site") + "&body=" + encodeURIComponent(texto);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-  const estado = { tipo: "institucional", extras: 0, adicionais: new Set(), modo: "mensal", plano: 0, ramo: RAMOS[0].id };
+  const estado = JORNADA.ler();
+  // Sem ramo na URL, mantém o orçamento inicial simples, sem adicionais.
+  if (!new URLSearchParams(location.search).has('ramo')) estado.adicionais = new Set();
   const MAX_EXTRAS = 15;
 
   // Marca, rodapé e links fixos de WhatsApp
   document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
-  document.title = CONFIG.nome + " · Sites com preço na tela e manutenção mensal";
   $("#ano").textContent = new Date().getFullYear();
   $("#emailLink").textContent = CONFIG.email;
   $("#emailLink").href = "mailto:" + CONFIG.email;
@@ -18,6 +22,28 @@
     el.target = "_blank";
     el.rel = "noopener";
   });
+  $("#contatoTopo").href = wa('Olá! Quero conversar sobre um site.');
+  $("#rPedir").textContent = temWhatsApp ? 'Pedir este site pelo WhatsApp' : 'Pedir este site por e-mail';
+  if (!temWhatsApp) {
+    document.querySelectorAll('[data-wa]').forEach((el) => {
+      if (el.classList.contains('wa-fixo')) {
+        el.setAttribute('aria-label', 'Falar por e-mail');
+        el.querySelector('span').textContent = 'E-mail';
+        el.querySelector('svg').innerHTML = '<path fill="currentColor" d="M3 5h18v14H3V5Zm2 2v1l7 5 7-5V7l-7 5-7-5Zm0 3v7h14v-7l-7 5-7-5Z"/>';
+      } else el.textContent = el.textContent.replace(/(?:no|pelo) WhatsApp/g, 'por e-mail');
+    });
+  }
+
+  // Navegação acessível também no celular.
+  const menuToggle = $('.menu-toggle');
+  const fecharMenu = () => { menuToggle.setAttribute('aria-expanded', 'false'); $('#menuPrincipal').classList.remove('aberto'); };
+  menuToggle.addEventListener('click', () => {
+    const aberto = menuToggle.getAttribute('aria-expanded') !== 'true';
+    menuToggle.setAttribute('aria-expanded', String(aberto));
+    $('#menuPrincipal').classList.toggle('aberto', aberto);
+  });
+  $('#menuPrincipal').addEventListener('click', (ev) => { if (ev.target.closest('a')) fecharMenu(); });
+  document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && menuToggle.getAttribute('aria-expanded') === 'true') { fecharMenu(); menuToggle.focus(); } });
 
   function calcular(e) {
     const tipo = TIPOS.find((t) => t.id === e.tipo);
@@ -65,6 +91,14 @@
     const b = ev.target.closest("[data-ramo]");
     if (!b) return;
     estado.ramo = b.dataset.ramo;
+    const ramo = RAMOS.find((r) => r.id === estado.ramo);
+    estado.tipo = ramo.tipo;
+    estado.adicionais = new Set(ramo.adicionais);
+    estado.extras = 0;
+    desenharOpcoes();
+    atualizar();
+    $('#pvRamo').value = estado.ramo;
+    atualizarMiniPrevia();
     desenharRamos();
     $(`[data-ramo="${estado.ramo}"]`).focus();
   });
@@ -119,6 +153,7 @@
     $("#pgNota").textContent = `${c.tipo.paginas} já inclusas · cada extra ${mensal ? brl(PAGINA_EXTRA.mensal) + "/mês" : brl(PAGINA_EXTRA.avista)}`;
 
     const novoPreco = brl(mensal ? c.mensal : c.avista);
+    $('#movelPreco').textContent = novoPreco + (mensal ? '/mês' : ' à vista');
     if ($("#rPreco").textContent !== novoPreco) {
       const caixa = $("#rPreco").parentElement;
       caixa.classList.remove("pulsa");
@@ -140,6 +175,7 @@
     const ramo = RAMOS.find((r) => r.id === estado.ramo).nome;
     const linhas = [
       "Olá! Montei meu site no configurador:",
+      ...(estado.nome ? [`• Negócio: ${estado.nome}`, ...(estado.cidade ? [`• Cidade: ${estado.cidade}`] : []), `• Cor: ${estado.cor}`] : []),
       `• Tipo: ${c.tipo.nome} (${c.paginas} ${c.paginas === 1 ? "página" : "páginas"})`,
       `• Adicionais: ${c.adds.length ? c.adds.map((a) => a.nome).join(", ") : "nenhum"}`,
       `• Ramo: ${ramo}`,
@@ -148,10 +184,21 @@
       `• Prazo: ${c.dias} dias`,
     ];
     $("#rPedir").href = wa(linhas.join("\n"));
+    $('#pedidoContexto').hidden = !estado.nome;
+    $('#pedidoNome').textContent = `Orçamento para ${estado.nome}${estado.cidade ? ' · ' + estado.cidade : ''}`;
+    const params = JORNADA.parametros(estado);
+    params.set('m', estado.ramo);
+    $('#editarPrevia').href = 'modelo.html?' + params;
+    document.querySelectorAll('[data-modo]').forEach((b) => {
+      const ativo = b.dataset.modo === estado.modo;
+      b.classList.toggle('ativo', ativo);
+      b.setAttribute('aria-pressed', String(ativo));
+    });
   }
 
   $("#tipoLista").addEventListener("change", (ev) => {
     estado.tipo = ev.target.value;
+    if (!TIPOS.find((t) => t.id === estado.tipo).extras) estado.extras = 0;
     atualizar();
   });
   $("#addLista").addEventListener("change", (ev) => {
@@ -203,7 +250,7 @@
   ).join("");
 
   // FAQ
-  $("#faqLista").innerHTML = FAQ.map(([p, r]) => `<details><summary>${esc(p)}</summary><p>${esc(r)}</p></details>`).join("");
+  // As dúvidas já são publicadas em HTML pelo gerador, inclusive para robôs sem JS.
 
   // Raio-X: com chave do PageSpeed Insights roda na hora; sem chave, vira pedido pelo WhatsApp.
   const RX_CATS = [
@@ -427,19 +474,14 @@
     (m) => `<a class="mod" href="modelo.html?m=${m.id}" style="--m-bg:${m.tema.bg};--m-tinta:${m.tema.tinta};--m-cor:${m.tema.cor};--m-corTinta:${m.tema.corTinta};--m-fonte:${m.tema.fonte}">
       <div class="mod-tela">
         <div class="mod-barra" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="mod-corpo mod-capa" style="--m-capa:url(img/modelos/${m.capa}.jpg)"><small>${esc(m.tag)}</small><strong>${esc(m.chamada)}</strong><span class="mod-cta">${esc(m.cta)}</span></div>
+        <div class="mod-corpo mod-capa" style="--m-capa:url(img/modelos/${m.capa}.webp)"><small>${esc(m.tag)}</small><strong>${esc(m.chamada)}</strong><span class="mod-cta">${esc(m.cta)}</span></div>
       </div>
       <div class="mod-pe"><strong>${esc(m.nome)}</strong><span>${esc(m.ramo)} · modelo</span></div>
     </a>`
   ).join("");
 
   // Quem chega de um modelo (?ramo=id) já encontra o ramo e o site indicado selecionados.
-  const ramoUrl = RAMOS.find((r) => r.id === new URLSearchParams(location.search).get("ramo"));
-  if (ramoUrl) {
-    estado.ramo = ramoUrl.id;
-    estado.tipo = ramoUrl.tipo;
-    estado.adicionais = new Set(ramoUrl.adicionais);
-  }
+  // Tipo, adicionais e dados da prévia já foram validados por JORNADA.ler().
 
   desenharRamos();
   desenharOpcoes();
@@ -452,18 +494,50 @@
   ];
   $("#pvRamo").innerHTML = RAMOS.map((r) => `<option value="${r.id}"${r.id === estado.ramo ? " selected" : ""}>${esc(r.nome)}</option>`).join("");
   $("#pvCores").innerHTML = CORES.map(([c, n], i) =>
-    `<label class="previa-cor" style="--c:${c}"><input type="radio" name="pvCor" value="${c}"${i === 0 ? " checked" : ""}><span class="oculto">${n}</span></label>`
+    `<label class="previa-cor" style="--c:${c}"><input type="radio" name="pvCor" value="${c}"${c === estado.cor ? " checked" : ""}><span class="oculto">${n}</span></label>`
   ).join("");
+  $('#pvNome').value = estado.nome;
+  $('#pvCidade').value = estado.cidade;
+  if (!$('[name=pvCor]:checked')) $('[name=pvCor]').checked = true;
+  function atualizarMiniPrevia() {
+    $('#pvMiniNome').textContent = $('#pvNome').value.trim() || 'O nome do seu negócio';
+    $('#pvMiniCidade').textContent = $('#pvCidade').value.trim() || 'Sua presença na internet começa aqui.';
+    $('#pvMiniRamo').textContent = RAMOS.find((r) => r.id === $('#pvRamo').value)?.nome || '';
+    $('#previaViva').style.setProperty('--pv-cor', $('[name=pvCor]:checked')?.value || estado.cor);
+  }
+  $('#previaForm').addEventListener('input', atualizarMiniPrevia);
+  $('#pvRamo').addEventListener('change', atualizarMiniPrevia);
+  atualizarMiniPrevia();
   $("#previaForm").addEventListener("submit", (ev) => {
     ev.preventDefault();
     const nome = $("#pvNome").value.trim();
     $("#pvErro").hidden = !!nome;
     if (!nome) return $("#pvNome").focus();
-    const p = new URLSearchParams({ m: $("#pvRamo").value, nome, cor: document.querySelector("[name=pvCor]:checked").value });
-    const cidade = $("#pvCidade").value.trim();
-    if (cidade) p.set("cidade", cidade);
+    const ramo = RAMOS.find((r) => r.id === $('#pvRamo').value);
+    if (ramo.id !== estado.ramo) {
+      estado.tipo = ramo.tipo; estado.adicionais = new Set(ramo.adicionais); estado.extras = 0;
+    }
+    Object.assign(estado, { ramo: ramo.id, nome, cidade: $('#pvCidade').value.trim(), cor: $('[name=pvCor]:checked').value });
+    const p = JORNADA.parametros(estado);
+    p.set('m', estado.ramo);
     location.href = "modelo.html?" + p;
   });
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      $('#orcamentoMovel').hidden = !entry.isIntersecting;
+      document.body.classList.toggle('com-orcamento', entry.isIntersecting);
+    }, { threshold: 0 }).observe($('#montar'));
+    const etapas = new IntersectionObserver((entries) => {
+      const ativa = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (!ativa) return;
+      document.querySelectorAll('[data-etapa]').forEach((a) => {
+        if (a.dataset.etapa === ativa.target.id) a.setAttribute('aria-current', 'step');
+        else a.removeAttribute('aria-current');
+      });
+    }, { rootMargin: '-15% 0px -45% 0px' });
+    ['previa', 'montar', 'pedido'].forEach((id) => etapas.observe(document.getElementById(id)));
+  }
 
   // O conteúdo é montado depois do carregamento, então reposiciona quem chegou por um link com âncora.
   if (location.hash.length > 1) {
@@ -482,7 +556,7 @@
     c.style.setProperty("--my", ev.clientY - r.top + "px");
   });
 
-  if (!calmo || new URLSearchParams(location.search).has("anima")) {
+  if (!calmo) {
     const alvos = document.querySelectorAll(
       ".sec h2, .sec .sub, .chips, .ramo, .mods > *, .mods-titulo, .config, .planos > *, .avulsos > *, .raiox-form, .grade3 > article, .faq > *, .final-in, .numeros > li, .passos > li, .comp, .sis, .previa-form"
     );

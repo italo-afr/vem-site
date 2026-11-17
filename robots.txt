@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
 Sitemap: https://vemsite.com.br/sitemap.xml

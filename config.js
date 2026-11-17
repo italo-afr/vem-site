@@ -66,4 +66,7 @@ const FAQ = [
   ["Vocês mexem em site que não fizeram?", "Sim. Os serviços avulsos e os planos de manutenção valem para qualquer site. Antes de começar, fazemos um raio-X grátis para saber o que ele precisa."],
   ["O que conta como alteração?", "Troca de texto, imagem, telefone, horário ou preço, com até 30 minutos de trabalho. O plano Básico inclui uma por mês e o Profissional, até quatro. Página ou função nova tem orçamento à parte."],
   ["Posso pagar à vista?", "Pode. O valor à vista é o das 12 mensalidades com 10% de desconto, já com o primeiro ano de manutenção e sem fidelidade."],
+  ["Qual tipo de site é indicado para o meu negócio?", "Para divulgar um serviço e receber pedidos, uma landing page pode ser suficiente. Para apresentar a empresa e vários serviços, indicamos o institucional. Para vender com carrinho e pagamento on-line, escolha a loja virtual. As páginas por ramo mostram exemplos de cada caso."],
+  ["O site vai aparecer em primeiro no Google ou nas IAs?", "Não há garantia de posição ou recomendação. Preparamos títulos, páginas, conteúdo e estrutura para facilitar a leitura pelos buscadores. Os resultados dependem também da concorrência, da relevância do conteúdo e do reconhecimento do negócio."],
+  ["Já tenho um site. Preciso refazer tudo?", "Nem sempre. O raio-X gratuito ajuda a identificar problemas de velocidade e boas práticas. Depois da análise, podemos indicar um conserto pontual, um plano de manutenção ou uma reformulação, com orçamento antes de começar."],
 ];

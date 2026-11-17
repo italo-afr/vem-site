@@ -304,7 +304,7 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
   .planos, .grade3 { grid-template-columns: 1fr; }
   .mods { grid-template-columns: 1fr 1fr; }
   .avulsos { grid-template-columns: 1fr 1fr; }
-  .resumo { position: static; }
+  .resumo { position: relative; top: auto; }
   .sec { padding: 56px 0; }
   .sec-alt, .final { border-radius: 28px; }
 }
@@ -489,3 +489,68 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 .previa-cor:has(input:focus-visible) { outline: 3px solid var(--cor); outline-offset: 4px; }
 @media (max-width: 900px) { .previa { grid-template-columns: 1fr; gap: 24px; } }
 @media (max-width: 560px) { .previa-dupla { grid-template-columns: 1fr; } }
+
+/* Caminho guiado: escolhas, prévia e orçamento. */
+[hidden] { display: none !important; }
+.pular { position: fixed; top: 8px; left: 16px; z-index: 60; transform: translateY(-180%); background: var(--noite); color: #fff; padding: 12px 20px; border-radius: 12px; }
+.pular:focus { transform: none; }
+.menu-toggle { display: none; }
+.hero .btn { gap: 8px; }
+.hero-atalho { margin-top: 16px; color: var(--suave); font-size: .9rem; }
+.hero-atalho a { text-underline-offset: 4px; }
+.jornada { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; border: 1px solid var(--linha); border-radius: 22px; background: rgba(255,255,255,.7); }
+.jornada a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px; text-decoration: none; color: var(--suave); font-weight: 700; border-radius: 14px; transition: background .2s, color .2s; }
+.jornada a span { display: grid; place-items: center; border: 1px solid var(--linha); border-radius: 50%; width: 30px; height: 30px; flex-shrink: 0; font-size: .85rem; }
+.jornada a:hover, .jornada a[aria-current] { background: var(--cor-claro); color: var(--cor-esc); }
+.jornada a[aria-current] span { background: var(--cor); color: white; }
+.servicos-resumo, .caminhos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 28px 0 18px; }
+.servico-card, .caminhos > a { background: var(--papel); border: 1px solid var(--linha); border-radius: 24px; padding: 24px; }
+.servico-card p, .caminhos a > span:not(.caminho-num) { display: block; color: var(--suave); margin-top: 10px; }
+.servico-card .servico-valor { color: var(--cor-esc); font-size: 1.5rem; font-weight: 800; }
+.servico-card .servico-valor small { font-size: .9rem; }
+.servico-card a { display: inline-block; margin-top: 16px; font-weight: 700; text-underline-offset: 4px; }
+.caminhos > a { display: flex; flex-direction: column; color: var(--tinta); text-decoration: none; transition: transform .2s, border-color .2s; }
+.caminhos > a:hover { transform: translateY(-4px); border-color: var(--cor); }
+.caminho-num { font-size: .8rem; font-weight: 800; color: var(--cor-esc); margin-bottom: 14px; }
+.caminhos strong { font-size: 1.2rem; line-height: 1.3; }
+.caminhos b { margin-top: auto; padding-top: 24px; font-size: .92rem; color: var(--cor-esc); }
+.previa-viva { margin-top: 28px; border: 1px solid var(--linha); border-radius: 22px; overflow: hidden; background: white; box-shadow: var(--sombra); }
+.pv-barra { padding: 13px 18px; display: flex; gap: 6px; border-bottom: 1px solid var(--linha); }
+.pv-barra i { width: 7px; height: 7px; background: var(--linha); border-radius: 50%; }
+.pv-conteudo { padding: 30px; background: color-mix(in srgb, var(--pv-cor) 7%, white); border-top: 4px solid var(--pv-cor); transition: background .25s, border-color .25s; }
+.pv-conteudo small { display: block; color: var(--suave); }
+.pv-conteudo strong { display: block; font-size: clamp(1.4rem,3vw,2rem); line-height: 1.25; margin: 10px 0; overflow-wrap: anywhere; }
+.pv-conteudo p { color: var(--suave); overflow-wrap: anywhere; }
+.pv-mini-btn { display: inline-block; border: 2px solid var(--pv-cor); padding: 9px 14px; border-radius: 10px; color: var(--tinta); background: white; margin-top: 24px; font-weight: 700; font-size: .85rem; transition: border-color .25s; }
+.pv-legenda { color: var(--suave); font-size: .8rem; padding: 12px 18px; }
+.pedido-contexto { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 24px; padding: 18px; border-radius: 16px; border: 1px solid var(--linha); background: white; }
+.pedido-contexto p { font-weight: 700; overflow-wrap: anywhere; }
+.orcamento-movel { display: none; }
+#trabalhos, #pedido { scroll-margin-top: 100px; }
+.mod-capa { content-visibility: auto; contain-intrinsic-size: auto 220px; }
+@media (max-width: 900px) {
+  .menu-toggle { display: inline-flex; border: 1px solid var(--linha); border-radius: 999px; padding: 9px 14px; background: white; color: var(--tinta); font-weight: 700; margin-left: auto; }
+  .topo-in { gap: 10px; position: relative; }
+  .menu.aberto { display: flex; position: absolute; top: calc(100% + 8px); left: 0; right: 0; flex-direction: column; padding: 14px; background: white; border: 1px solid var(--linha); border-radius: 24px; box-shadow: var(--sombra); }
+  .menu.aberto a { padding: 14px; }
+  .servicos-resumo, .caminhos { grid-template-columns: 1fr; }
+  .orcamento-movel { position: fixed; display: flex; align-items: center; justify-content: space-between; gap: 12px; bottom: 0; left: 0; right: 0; z-index: 25; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); color: white; background: var(--noite); box-shadow: 0 -8px 32px #12122a22; }
+  .orcamento-movel small, .orcamento-movel strong { display: block; }
+  .orcamento-movel small { color: var(--noite-suave); font-size: .75rem; }
+  .orcamento-movel strong { font-size: 1.1rem; }
+  .orcamento-movel .btn { background: white; color: var(--noite); border-color: white; }
+  .com-orcamento .wa-fixo { bottom: 100px; }
+  .com-orcamento { padding-bottom: 90px; }
+  #pedido { scroll-margin-bottom: 100px; }
+}
+@media (max-width: 560px) {
+  #contatoTopo { font-size: .76rem; padding: 9px 11px; }
+  .marca { font-size: .95rem; gap: 6px; white-space: nowrap; }
+  .menu-toggle { padding: 9px 11px; font-size: .8rem; }
+  .jornada { gap: 0; padding: 8px; }
+  .jornada a { flex-direction: column; gap: 6px; font-size: .75rem; padding: 8px 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jornada a, .caminhos > a, .pv-conteudo, .pv-mini-btn { transition: none; }
+  .caminhos > a:hover { transform: none; }
+}
