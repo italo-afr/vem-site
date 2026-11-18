@@ -512,7 +512,7 @@
   const temaMod = (t) => `--m-bg:${t.bg};--m-tinta:${t.tinta};--m-cor:${t.cor};--m-corTinta:${t.corTinta};--m-fonte:${t.fonte}`;
   $("#trabalhosLista").innerHTML = TRABALHOS.map((t) => {
     const abre = t.telas
-      ? `<a class="mod" href="projeto.html?p=${esc(t.id)}" style="${temaMod(t.tema)}">`
+      ? `<a class="mod" href="${esc(t.pagina || "projeto.html?p=" + t.id)}" style="${temaMod(t.tema)}">`
       : t.link ? `<a class="mod" href="${esc(t.link)}" target="_blank" rel="noopener" style="${temaMod(t.tema)}">` : `<div class="mod" style="${temaMod(t.tema)}">`;
     return `${abre}
       <div class="mod-tela">

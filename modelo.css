@@ -89,7 +89,7 @@ body.personalizado .m-btn-contorno { color: var(--cor2); border-color: var(--cor
 .m-rodape { padding: 36px 0 28px; color: var(--suave); font-size: 0.86rem; border-top: 1px solid color-mix(in srgb, var(--tinta) 10%, transparent); }
 .m-rodape-topo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; margin-bottom: 16px; color: var(--tinta); }
 .m-rodape nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-.m-rodape nav a { text-decoration: none; }
+.m-rodape nav a { display: inline-block; padding: 6px 0; text-decoration: none; }
 .m-rodape nav a:hover { text-decoration: underline; }
 
 /* ================= 1. Clínica Aurora: foto inteira, vidro, cartões com ícone ================= */
@@ -273,7 +273,7 @@ body.personalizado .m-btn-contorno { color: var(--cor2); border-color: var(--cor
 .m-plano p { color: var(--suave); margin-bottom: 10px; }
 .m-pilulas { display: flex; flex-wrap: wrap; gap: 16px; }
 .m-pilula { flex: 1 1 260px; border: 1.5px solid var(--cor); border-radius: 999px; padding: 26px 40px; }
-.m-pilula:nth-child(even) { background: var(--cor); color: var(--corTinta); --suave: #e3ead9; }
+.m-pilula:nth-child(even) { background: var(--cor); color: var(--corTinta); --suave: #f4f7ef; }
 .m-pilula h3 { font-family: var(--fonte); font-size: 1.3rem; }
 .m-pilula p { color: var(--suave); }
 .m-outros .m-caixa { border-radius: 40px; }
@@ -326,3 +326,11 @@ body.personalizado .m-btn-contorno { color: var(--cor2); border-color: var(--cor
   .m-sec { padding: 52px 0; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .m-btn, .m-card, .m-produto img { transition: none; } }
+
+/* Celular: a faixa de demonstração rola junto com a página e fica mais baixa. */
+@media (max-width: 640px) {
+  .demo-faixa { position: static; font-size: 0.8rem; padding: 8px 12px; gap: 6px 12px; }
+  .demo-acoes { gap: 10px; flex-wrap: wrap; }
+  .demo-acoes a { padding: 6px 0; }
+  .demo-acoes .demo-btn { padding: 6px 12px; }
+}

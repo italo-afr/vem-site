@@ -10,13 +10,13 @@ const TRABALHOS = [
     chamada: "Site, área dos pais e painel de atendimento.",
     desc: "Site de uma página com vídeo e chamada para agendar, área com login para as famílias e painel para a profissional montar e publicar os planos.",
     cta: "Ver site no ar", link: "https://liviabarbuti.com.br",
-    tema: { bg: "#fef0f6", tinta: "#4a4d3c", cor: "#6f7652", corTinta: "#ffffff", fonte: "'Fraunces', Georgia, serif" },
+    tema: { bg: "#fef0f6", tinta: "#4a4d3c", cor: "#5f6545", corTinta: "#ffffff", fonte: "'Fraunces', Georgia, serif" },
   },
   {
     nome: "Nexo ERP", tipo: "Sistema sob medida · demonstração", tag: "Gestão financeira",
     chamada: "Vendas, contas e contratos em um só sistema.",
     desc: "Orçamentos e vendas parceladas, contas a pagar e a receber, contratos mensais, estoque simples e relatório de caixa. Versão de demonstração com dados fictícios.",
-    cta: "Ver as telas", id: "nexo",
+    cta: "Ver as telas", id: "nexo", pagina: "nexo-erp.html",
     pontos: [
       { t: "Financeiro", d: "Contas a pagar e a receber com parcelas, recebimento parcial e saldo de cada conta bancária." },
       { t: "Vendas e estoque", d: "O orçamento parcelado vira venda, gera as parcelas e dá baixa no estoque." },
@@ -35,7 +35,7 @@ const TRABALHOS = [
     nome: "ServiçoFlow", tipo: "Sistema sob medida · demonstração", tag: "Ordens de serviço",
     chamada: "Do pedido ao serviço feito, em um só lugar.",
     desc: "Para empresas de manutenção: o atendente monta o orçamento e agenda a visita, o cliente aprova por um link sem criar conta e o técnico registra o serviço com fotos pelo celular. Demonstração com dados fictícios.",
-    cta: "Ver as telas", id: "servicoflow",
+    cta: "Ver as telas", id: "servicoflow", pagina: "servicoflow.html",
     pontos: [
       { t: "Atendente", d: "Registra o pedido, monta o orçamento e agenda a visita sem conflito de horário." },
       { t: "Cliente", d: "Abre um link privado, vê o orçamento e aceita ou recusa, sem criar conta." },
@@ -50,14 +50,14 @@ const TRABALHOS = [
       { src: "img/servicoflow/07-tecnico-minhas-visitas-celular.webp", legenda: "O técnico vê as visitas do dia", cel: true },
       { src: "img/servicoflow/08-tecnico-execucao-celular.webp", legenda: "Registro do serviço feito, com fotos", cel: true },
     ],
-    tema: { bg: "#eef6fb", tinta: "#0f2b3d", cor: "#0b76b8", corTinta: "#ffffff", fonte: "'Plus Jakarta Sans', system-ui, sans-serif" },
+    tema: { bg: "#eef6fb", tinta: "#0f2b3d", cor: "#0a69a5", corTinta: "#ffffff", fonte: "'Plus Jakarta Sans', system-ui, sans-serif" },
   },
 ];
 
 const MODELOS = [
   {
     id: "saude", ramo: "Saúde e estética", nome: "Clínica Aurora", tag: "Odontologia e estética",
-    tema: { bg: "#f3f8f6", papel: "#ffffff", tinta: "#12302c", suave: "#55726d", cor: "#0f8f7e", corTinta: "#ffffff", fonte: "'Fraunces', Georgia, serif" },
+    tema: { bg: "#f3f8f6", papel: "#ffffff", tinta: "#12302c", suave: "#55726d", cor: "#0b7a6b", corTinta: "#ffffff", fonte: "'Fraunces', Georgia, serif" },
     topo: "padrao", hero: "foto", capa: "saude-hero", capaAlt: "Paciente sorrindo na cadeira de uma clínica odontológica clara",
     chamada: "Seu sorriso bem cuidado, sem espera.",
     texto: "Atendimento com hora marcada, equipe fixa e orçamento explicado antes de qualquer procedimento.",

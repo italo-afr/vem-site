@@ -115,7 +115,7 @@
   };
 
   document.getElementById("app").innerHTML = `
-    ${m.aviso ? `<div class="m-aviso">${esc(m.aviso)}</div>` : ""}
+    ${m.aviso ? `<aside class="m-aviso" aria-label="Aviso da loja">${esc(m.aviso)}</aside>` : ""}
     <header class="m-topo t-${m.topo}"><div class="m-wrap m-topo-in">${topos[m.topo] || topos.padrao}</div></header>
     <main>
       ${hero}

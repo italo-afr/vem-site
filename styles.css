@@ -362,7 +362,7 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 
 /* Página de projeto e páginas de texto */
 .pagina { padding: 56px 0 72px; }
-.pagina .voltar { font-weight: 700; text-decoration: none; }
+.pagina .voltar { display: inline-block; padding: 8px 0; font-weight: 700; text-decoration: none; }
 .pagina .voltar:hover { text-decoration: underline; }
 .pagina h1 { font-size: clamp(2rem, 4.4vw, 3rem); margin-top: 18px; }
 .proj-tipo { display: inline-block; margin-top: 22px; background: var(--cor-claro); color: var(--cor-esc); font-weight: 700; font-size: 0.82rem; padding: 5px 12px; border-radius: 999px; }
@@ -607,3 +607,132 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
   .previa-cor { width: 36px; height: 36px; }
   .conserto-form { padding: 18px; }
 }
+
+.carrossel-dica { display: none; color: var(--suave); font-size: 0.82rem; margin-top: -4px; }
+
+/* ===== Celular: leitura mais curta e toques mais fáceis (até 640 px) ===== */
+@media (max-width: 640px) {
+  .sec { padding: 40px 0; }
+  .sec-alt, .final { border-radius: 24px; margin-inline: 8px; }
+  .final { padding: 52px 0; }
+  .sub { font-size: 1rem; }
+
+  /* O topo já tem "Fale com a gente"; a bolinha cobria textos e botões. */
+  .wa-fixo { display: none; }
+
+  /* Topo da página mais enxuto */
+  .hero { padding: 24px 0 8px; }
+  .hero-vis { padding: 14px 0 4px; }
+  .cubo, .flut { display: none; }
+  .hero-card { padding: 22px; }
+  .numeros { gap: 10px; margin-top: 22px; }
+  .numeros li { padding: 14px 16px; }
+  .numeros strong { font-size: 1.25rem; }
+  .numeros span { font-size: 0.8rem; line-height: 1.35; display: block; }
+
+  /* Listas longas viram carrossel: deslize para o lado */
+  .servicos-resumo, .mods, .planos {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    gap: 12px; margin-inline: -16px; padding: 6px 16px 18px; scroll-padding-inline: 16px; scrollbar-width: none;
+  }
+  .servicos-resumo::-webkit-scrollbar, .mods::-webkit-scrollbar, .planos::-webkit-scrollbar { display: none; }
+  .servicos-resumo > *, .mods > *, .planos > * { flex: 0 0 84%; min-width: 0; scroll-snap-align: start; }
+  #modelosLista { align-items: flex-start; }
+  .servicos-resumo { margin-top: 20px; margin-bottom: 4px; }
+  .mods-titulo { margin-top: 26px; }
+  .carrossel-dica { display: block; }
+
+  /* Como funciona: número ao lado do texto */
+  .passos { gap: 10px; margin-top: 22px; }
+  .passos li { display: grid; grid-template-columns: 38px 1fr; column-gap: 14px; padding: 16px; }
+  .passos li::before { grid-row: span 2; width: 38px; height: 38px; margin: 0; }
+  .passos li > * { grid-column: 2; }
+  .passos p { margin-top: 2px; font-size: 0.9rem; }
+
+  /* Ramos numa linha só, deslizando */
+  .chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: -16px; padding: 2px 16px 10px; scrollbar-width: none; margin-top: 20px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips button { flex: none; white-space: nowrap; }
+
+  /* Projetos e modelos: nome em cima, tipo embaixo */
+  .mod-pe { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .mod-pe span { text-align: left; }
+
+  /* Configurador: preço embaixo do nome, sem espremer a descrição */
+  .opcao { display: grid; grid-template-columns: 20px 1fr; column-gap: 12px; padding: 14px 16px; }
+  .opcao > .opcao-preco { grid-column: 2; margin-top: 4px; }
+  .opcao-txt .opcao-preco { display: block; margin-top: 6px; color: var(--tinta); }
+
+  /* Comparativo em cartões, sem rolar para o lado */
+  .comp { padding: 0; overflow: visible; background: none; border: 0; box-shadow: none; backdrop-filter: none; }
+  .comp table, .comp tbody, .comp tr, .comp th, .comp td { display: block; width: auto; min-width: 0; }
+  .comp thead { display: none; }
+  .comp tbody tr { background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: 20px; padding: 16px; margin-bottom: 12px; box-shadow: var(--sombra); }
+  .comp tbody tr > * { border: 0; padding: 3px 0; font-size: 0.92rem; }
+  .comp tbody th { font-size: 1.05rem; margin-bottom: 8px; }
+  .comp td::before { content: attr(data-label) ": "; font-weight: 700; color: var(--tinta); }
+  .comp tbody .comp-nos { background: var(--noite); color: #fff; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; }
+  .comp tbody .comp-nos::before { color: var(--acento-claro); }
+  .comp td:not(.comp-nos) { color: var(--suave); }
+
+  /* Consertos em linhas compactas: nome à esquerda, preço e botão à direita */
+  .avulso:not(.avulso-personalizado) { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; padding: 16px 18px; }
+  .avulso:not(.avulso-personalizado) > :not(.avulso-pe) { grid-column: 1; }
+  .avulso:not(.avulso-personalizado) .avulso-pe { grid-column: 2; grid-row: 1 / span 3; flex-direction: column; align-items: flex-end; justify-content: center; gap: 4px; margin: 0; padding: 0; text-align: right; }
+  .avulso:not(.avulso-personalizado) .avulso-pe a { padding: 6px 0; }
+
+  /* Já tenho um site, combinados e sistemas mais compactos */
+  .caminhos { gap: 12px; margin-top: 20px; }
+  .caminhos > a { padding: 18px; }
+  .caminho-num { margin-bottom: 8px; }
+  .caminhos b { padding-top: 12px; }
+  .grade3 { gap: 10px; margin-top: 22px; }
+  .grade3 article { display: grid; grid-template-columns: 38px 1fr; column-gap: 14px; padding: 16px; }
+  .grade3 article::before { grid-row: span 2; margin: 0; }
+  .grade3 article > * { grid-column: 2; }
+  .grade3 p { font-size: 0.9rem; margin-top: 2px; }
+
+  /* Rodapé com links fáceis de tocar */
+  .rodape { padding: 24px 0 32px; }
+  .rodape-in { flex-direction: column; gap: 14px; }
+  .rodape-links, .rodape-ramos { display: flex; flex-direction: column; gap: 0; }
+  .rodape-links a, .rodape-ramos a { display: block; padding: 9px 0; }
+
+  /* Telas dos projetos: carrossel, uma tela por vez */
+  .telas, .telas-cel, .telas-cel:has(> .tela:only-child) {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    gap: 14px; max-width: none; margin-inline: -16px; padding: 6px 16px 18px; scroll-padding-inline: 16px; scrollbar-width: none;
+  }
+  .telas::-webkit-scrollbar { display: none; }
+  .telas > .tela { flex: 0 0 88%; min-width: 0; scroll-snap-align: start; }
+  .telas-cel > .tela { flex-basis: 64%; }
+  .telas-cel > .tela:only-child { flex-basis: 70%; }
+}
+/* Em telas de toque não existe "passar o mouse": o aviso de ampliar fica sempre visível. */
+@media (hover: none) { .tela-abrir::after { opacity: 1; content: "Toque para ampliar"; } }
+@media (max-width: 360px) {
+  .topo-in { gap: 6px; padding-left: 12px; }
+  #contatoTopo { white-space: nowrap; font-size: .72rem; padding: 8px 10px; }
+  .menu-toggle { padding: 8px 10px; }
+}
+
+/* Artigos */
+.migalhas { font-size: .85rem; color: var(--suave); margin-bottom: 14px; }
+.migalhas a { color: inherit; display: inline-block; padding: 6px 0; }
+.artigo h1 { font-size: clamp(1.9rem, 4.2vw, 2.8rem); line-height: 1.12; letter-spacing: -.03em; }
+.artigo-data { color: var(--suave); font-size: .88rem; margin-top: 10px; }
+.artigo h2 { margin-top: 36px; font-size: 1.35rem; }
+.artigo p, .artigo li { color: var(--tinta); line-height: 1.7; }
+.artigo ul, .artigo ol { padding-left: 22px; display: grid; gap: 8px; margin-top: 12px; }
+.artigo p + p { margin-top: 12px; }
+.artigo-cta { margin-top: 40px; }
+.artigo-cta h2 { margin-top: 0; }
+.artigo-lista { list-style: none; padding: 0 !important; }
+.artigo-lista a { display: inline-block; padding: 6px 0; font-weight: 600; }
+.artigos-grade { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 28px; }
+.artigo-cartao { display: flex; flex-direction: column; gap: 8px; text-decoration: none; color: var(--tinta); transition: transform .2s, border-color .2s; }
+.artigo-cartao h2 { font-size: 1.2rem; margin: 0; }
+.artigo-cartao span { margin-top: auto; padding-top: 10px; font-weight: 700; color: var(--cor-esc); }
+.artigo-cartao:hover { transform: translateY(-3px); border-color: var(--cor); }
+@media (max-width: 700px) { .artigos-grade { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .artigo-cartao { transition: none; } }
