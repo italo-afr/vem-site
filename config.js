@@ -4,6 +4,7 @@ const CONFIG = {
   whatsapp: "5519991369828", // DDI + DDD + número, só dígitos
   email: "vemsitecontato@gmail.com",
   linkedin: "https://www.linkedin.com/company/vemsite/",
+  horario: "Segunda a sexta, das 8h às 17h30",
   // Chave gratuita da API PageSpeed Insights (Google Cloud). Restrinja a chave ao
   // domínio do site. Vazia = o raio-X vira pedido manual pelo WhatsApp.
   pagespeedKey: "AIzaSyD3LGKyQCyFFr-2ylO8D7OWY3Tbv6Ws1nY",
@@ -62,6 +63,15 @@ const AVULSOS = [
   { nome: "Google Meu Negócio", desc: "Criação e configuração do perfil", preco: 250, prazo: "3 dias úteis" },
 ];
 
+// Página de suporte (suporte.html), gerada por ferramentas/gerar_suporte.py.
+// Cada chamado avulso tem até 1 hora de trabalho, remoto, no horário de CONFIG.horario.
+const SUPORTE = [
+  { id: "email", nome: "E-mail profissional", desc: "Criar contas no seu domínio, configurar no celular e no computador, recuperar acesso e resolver e-mail que não chega ou não sai.", preco: 120 },
+  { id: "dominio", nome: "Domínio e hospedagem", desc: "Renovar o domínio, ajustar o DNS, apontar para o site ou para o e-mail e resolver site fora do ar por falta de pagamento ou configuração.", preco: 120 },
+  { id: "computador", nome: "Suporte remoto no computador", desc: "Instalar e configurar programas, resolver lentidão, travamentos, vírus e atualizações, por acesso remoto com a sua autorização.", preco: 120 },
+];
+const SUPORTE_MENSAL = { nome: "Suporte mensal", preco: 349, itens: ["Até 4 chamados por mês, de até 1 hora cada", "E-mail, domínio e computadores no mesmo pacote", "Até 5 computadores ou usuários", "Prioridade na fila de atendimento", "Pedidos pelo WhatsApp"] };
+
 const RAMOS = [
   { id: "saude", pagina: "site-para-clinicas-e-consultorios.html", nome: "Saúde e estética", titulo: "Agenda cheia começa no Google", texto: "Clínicas, consultórios, dentistas e salões: o paciente pesquisa, compara e marca pelo celular.", itens: ["Agendamento on-line e botão de WhatsApp", "Página para cada especialidade ou tratamento", "Avaliações do Google em destaque"], tipo: "institucional", adicionais: ["agendamento"] },
   { id: "alimentacao", pagina: "site-para-restaurantes.html", nome: "Alimentação", titulo: "Seu cardápio a um toque do pedido", texto: "Restaurantes, lanchonetes, confeitarias e deliveries: cardápio sempre atualizado e pedido direto, sem taxa de aplicativo.", itens: ["Cardápio digital que você mesmo atualiza", "Pedido pelo WhatsApp", "Horário, endereço e mapa sempre certos"], tipo: "landing", adicionais: ["catalogo"] },
@@ -78,6 +88,7 @@ const FAQ = [
   ["O domínio fica no meu nome?", "Sim, sempre. Textos, fotos e logotipo também são seus desde o primeiro dia."],
   ["Vocês mexem em site que não fizeram?", "Sim. Os serviços avulsos e os planos de manutenção valem para qualquer site. Antes de começar, fazemos um raio-X grátis para saber o que ele precisa."],
   ["O que conta como alteração?", "Troca de texto, imagem, telefone, horário ou preço, com até 30 minutos de trabalho. O plano Básico inclui uma por mês e o Profissional, até quatro. Página ou função nova tem orçamento à parte."],
+  ["Vocês fazem suporte de TI?", "Fazemos suporte remoto para pequenos negócios: e-mail profissional, domínio e hospedagem e computadores (programas, lentidão, vírus e atualizações). O atendimento é de segunda a sexta, das 8h às 17h30, por chamado avulso ou pacote mensal. Os preços estão na página de suporte."],
   ["Posso pagar à vista?", "Pode. O valor à vista é o das 12 mensalidades com 10% de desconto, já com o primeiro ano de manutenção e sem fidelidade."],
   ["Qual tipo de site é indicado para o meu negócio?", "Para divulgar um serviço e receber pedidos, uma landing page pode ser suficiente. Para apresentar a empresa e vários serviços, indicamos o institucional. Para vender com carrinho e pagamento on-line, escolha a loja virtual. As páginas por ramo mostram exemplos de cada caso."],
   ["O site vai aparecer em primeiro no Google ou nas IAs?", "Não há garantia de posição ou recomendação. Preparamos títulos, páginas, conteúdo e estrutura para facilitar a leitura pelos buscadores. Os resultados dependem também da concorrência, da relevância do conteúdo e do reconhecimento do negócio."],

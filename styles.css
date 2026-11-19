@@ -736,3 +736,19 @@ legend { font-weight: 700; padding: 0; margin-bottom: 12px; }
 .artigo-cartao:hover { transform: translateY(-3px); border-color: var(--cor); }
 @media (max-width: 700px) { .artigos-grade { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { .artigo-cartao { transition: none; } }
+
+/* Página de suporte (suporte.html) */
+.suporte-titulo { margin-top: 44px; font-size: 1.5rem; }
+.suporte-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+.suporte-mensal { display: grid; grid-template-columns: minmax(0, 380px) 1fr; gap: 18px; margin-top: 20px; align-items: stretch; }
+.suporte-como h3 { margin: 0 0 10px; font-size: 1.1rem; }
+.suporte-como h3 + p { margin-top: 0; }
+.suporte-como ol { padding-left: 20px; display: grid; gap: 8px; color: var(--suave); margin: 0 0 22px; }
+@media (max-width: 900px) {
+  .suporte-grade, .suporte-mensal { grid-template-columns: 1fr; }
+}
+/* Os cards de suporte têm texto longo: no celular ficam em coluna, com preço embaixo. */
+@media (max-width: 640px) {
+  .suporte-grade .avulso:not(.avulso-personalizado) { display: flex; padding: 20px; }
+  .suporte-grade .avulso:not(.avulso-personalizado) .avulso-pe { flex-direction: row; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 14px; text-align: left; }
+}
