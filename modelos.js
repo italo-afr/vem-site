@@ -13,6 +13,17 @@ const TRABALHOS = [
     tema: { bg: "#fef0f6", tinta: "#4a4d3c", cor: "#5f6545", corTinta: "#ffffff", fonte: "'Fraunces', Georgia, serif" },
   },
   {
+    nome: "LabManager", tipo: "Sistema sob medida · em uso", tag: "Laboratório de prótese",
+    chamada: "Do pedido à entrega e ao recebimento.",
+    desc: "Para laboratórios de prótese dentária: ficha do pedido com odontograma, fila de produção por setor, calendário de entregas, conta corrente dos dentistas, comissões e relatórios. Funciona sem internet e no celular.",
+    cta: "Conhecer o sistema", id: "labmanager", pagina: "labmanager.html",
+    telas: [
+      { src: "img/labmanager/01-fila.webp", legenda: "Fila de produção com urgentes e atrasados" },
+      { src: "img/labmanager/04-ficha.webp", legenda: "Ficha do pedido com os serviços da lista de preço" },
+    ],
+    tema: { bg: "#eef4ff", tinta: "#0f1d3d", cor: "#2563eb", corTinta: "#ffffff", fonte: "'Plus Jakarta Sans', system-ui, sans-serif" },
+  },
+  {
     nome: "Nexo ERP", tipo: "Sistema sob medida · demonstração", tag: "Gestão financeira",
     chamada: "Vendas, contas e contratos em um só sistema.",
     desc: "Orçamentos e vendas parceladas, contas a pagar e a receber, contratos mensais, estoque simples e relatório de caixa. Versão de demonstração com dados fictícios.",

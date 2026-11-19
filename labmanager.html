@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LabManager — sistema para laboratório de prótese dentária · Vem Site</title>
+  <meta name="description" content="Pedidos, fila de produção, entregas, conta corrente dos dentistas, comissões e relatórios num só sistema, feito para laboratório de prótese dentária. Funciona sem internet e no celular.">
+  <link rel="canonical" href="https://vemsite.com.br/labmanager.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Vem Site">
+  <meta property="og:title" content="LabManager — sistema para laboratório de prótese dentária">
+  <meta property="og:description" content="Do pedido à entrega e ao recebimento: fila de produção, conta dos dentistas, comissões e relatórios. Telas com dados fictícios.">
+  <meta property="og:url" content="https://vemsite.com.br/labmanager.html">
+  <meta property="og:image" content="https://vemsite.com.br/img/labmanager/01-fila.webp">
+  <meta property="og:image:width" content="2000">
+  <meta property="og:image:height" content="1250">
+  <meta property="og:image:alt" content="LabManager — fila de produção do laboratório com dados fictícios">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#12122a">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'"><noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="styles.css?v=a45f4674d25d">
+  <style>
+    .lm-hero { padding: 56px 0 40px; display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+    .lm-hero h1 { margin-top: 16px; font-size: clamp(2.1rem, 4.1vw, 3.2rem); }
+    .lm-hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--cor), #2bb8a8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lm-selo { display: inline-flex; align-items: center; gap: 8px; background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: 999px; padding: 6px 14px 6px 8px; font-weight: 700; font-size: 0.82rem; color: var(--cor-esc); box-shadow: var(--sombra); }
+    .lm-selo b { background: var(--cor); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: 0.72rem; letter-spacing: 0.04em; }
+    .lm-checks { list-style: none; padding: 0; margin: 26px 0 0; display: grid; gap: 8px; color: var(--suave); font-weight: 600; }
+    .lm-checks li::before { content: "✓"; color: #0f9f8c; font-weight: 800; margin-right: 10px; }
+    .lm-palco { position: relative; padding-bottom: 40px; }
+    .lm-janela { background: #fff; border: 1px solid var(--vidro-borda); border-radius: 22px; box-shadow: 0 40px 80px -40px rgba(40, 40, 140, 0.55); overflow: hidden; transform: perspective(1600px) rotateY(-6deg) rotateX(2deg); }
+    .lm-barra { display: flex; gap: 6px; padding: 12px 14px; border-bottom: 1px solid var(--linha); background: #fafaff; }
+    .lm-barra i { width: 10px; height: 10px; border-radius: 50%; background: #dcdcef; }
+    .lm-janela img { display: block; width: 100%; height: auto; }
+    .lm-fone { position: absolute; right: -14px; bottom: 0; width: 30%; max-width: 190px; background: var(--noite); border-radius: 30px; padding: 8px; box-shadow: 0 30px 60px -24px rgba(18, 18, 42, 0.7); }
+    .lm-fone img { display: block; width: 100%; height: auto; border-radius: 23px; aspect-ratio: 9 / 17; object-fit: cover; object-position: top; }
+    .lm-func img, .lm-cel img { height: auto; }
+
+    .lm-faixa { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+    .lm-faixa div { background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: var(--raio); padding: 18px 20px; box-shadow: var(--sombra); }
+    .lm-faixa strong { display: block; font-size: 1.35rem; letter-spacing: -0.02em; }
+    .lm-faixa span { color: var(--suave); font-size: 0.9rem; }
+
+    .lm-dores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+    .lm-dores article { background: var(--papel); border: 1px solid var(--linha); border-radius: var(--raio); padding: 24px; }
+    .lm-dores .antes { color: #b4234a; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .lm-dores h3 { margin: 8px 0 10px; font-size: 1.12rem; }
+    .lm-dores p { color: var(--suave); font-size: 0.95rem; }
+    .lm-dores .depois { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--linha); color: var(--tinta); font-weight: 600; font-size: 0.95rem; }
+    .lm-dores .depois::before { content: "Com o LabManager: "; color: #0f9f8c; }
+
+    .lm-func { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 48px; align-items: center; margin-top: 72px; }
+    .lm-func:nth-of-type(even) { grid-template-columns: 1.15fr 0.85fr; }
+    .lm-func:nth-of-type(even) .lm-func-txt { order: 2; }
+    .lm-num { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--cor-claro); color: var(--cor-esc); font-weight: 800; font-size: 0.9rem; }
+    .lm-func h3 { font-size: clamp(1.35rem, 2.4vw, 1.75rem); letter-spacing: -0.02em; line-height: 1.15; margin-top: 14px; }
+    .lm-func p { color: var(--suave); margin-top: 12px; }
+    .lm-func ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+    .lm-func li { padding-left: 26px; position: relative; }
+    .lm-func li::before { content: ""; position: absolute; left: 4px; top: 0.55em; width: 10px; height: 10px; border-radius: 3px; background: var(--acento); }
+    .lm-func .tela-abrir { cursor: zoom-in; display: block; width: 100%; font: inherit; }
+    .lm-duas { display: grid; gap: 14px; }
+
+    .lm-cel { display: grid; grid-template-columns: 1fr auto auto; gap: 28px; align-items: center; }
+    .lm-cel .tela { width: 230px; }
+
+    .lm-grade { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 30px; }
+    .lm-grade article { background: var(--papel); border: 1px solid var(--linha); border-radius: var(--raio); padding: 22px; }
+    .lm-grade .ico { font-size: 1.5rem; }
+    .lm-grade h3 { font-size: 1.05rem; margin-top: 10px; }
+    .lm-grade p { color: var(--suave); font-size: 0.93rem; margin-top: 6px; }
+
+    .lm-antigo { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items: start; }
+    .lm-tabela { width: 100%; border-collapse: collapse; background: var(--papel); border-radius: var(--raio); overflow: hidden; border: 1px solid var(--linha); font-size: 0.93rem; }
+    .lm-tabela th, .lm-tabela td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+    .lm-tabela th { background: var(--cor-claro); color: var(--cor-esc); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .lm-tabela tr:last-child td { border-bottom: 0; }
+    .lm-tabela td:first-child { color: var(--suave); }
+
+    .lm-passos { list-style: none; padding: 0; margin: 30px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: p; }
+    .lm-passos li { background: var(--vidro); border: 1px solid var(--vidro-borda); border-radius: var(--raio); padding: 22px; box-shadow: var(--sombra); counter-increment: p; }
+    .lm-passos li::before { content: counter(p); display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--noite); color: #fff; font-weight: 800; }
+    .lm-passos h3 { font-size: 1.02rem; margin-top: 12px; }
+    .lm-passos p { color: var(--suave); font-size: 0.93rem; margin-top: 6px; }
+
+    .lm-faq { margin-top: 26px; display: grid; gap: 10px; max-width: 820px; }
+    .lm-faq details { background: var(--papel); border: 1px solid var(--linha); border-radius: 16px; padding: 4px 20px; }
+    .lm-faq summary { cursor: pointer; font-weight: 700; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    .lm-faq summary::-webkit-details-marker { display: none; }
+    .lm-faq summary::after { content: "+"; color: var(--cor); font-size: 1.3rem; line-height: 1; }
+    .lm-faq details[open] summary::after { content: "–"; }
+    .lm-faq p { color: var(--suave); padding-bottom: 16px; }
+    .lm-nota { color: var(--suave); font-size: 0.88rem; margin-top: 18px; }
+    .final p.sub { color: var(--noite-suave); margin-inline: auto; }
+
+    @media (max-width: 900px) {
+      .lm-hero { grid-template-columns: 1fr; gap: 36px; padding-top: 36px; }
+      .lm-janela { transform: none; }
+      .lm-fone { right: 0; }
+      .lm-faixa { grid-template-columns: 1fr 1fr; }
+      .lm-dores, .lm-grade { grid-template-columns: 1fr; }
+      .lm-func, .lm-func:nth-of-type(even) { grid-template-columns: 1fr; gap: 22px; margin-top: 56px; }
+      .lm-func:nth-of-type(even) .lm-func-txt { order: 0; }
+      .lm-cel { grid-template-columns: 1fr 1fr; }
+      .lm-cel > div:first-child { grid-column: 1 / -1; }
+      .lm-cel .tela { width: auto; }
+      .lm-antigo { grid-template-columns: 1fr; }
+      .lm-passos { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .lm-faixa, .lm-passos { grid-template-columns: 1fr; }
+      .lm-fone { width: 34%; right: -4px; border-radius: 22px; padding: 6px; }
+      .lm-fone img { border-radius: 17px; }
+      .lm-tabela th, .lm-tabela td { padding: 10px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topo">
+    <div class="wrap topo-in">
+      <a class="marca" href="index.html"><span class="marca-ponto"></span><span data-nome>Vem Site</span></a>
+      <a class="btn btn-sm" data-wa="Olá! Vi o LabManager no site e quero uma demonstração para o meu laboratório." href="#contato">Pedir demonstração</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="lm-hero" aria-labelledby="titulo">
+        <div>
+          <a class="voltar" href="index.html#trabalhos" style="font-weight:700;text-decoration:none">← Voltar aos projetos</a>
+          <div style="margin-top:14px"><span class="lm-selo"><b>NOVO</b> Sistema para laboratório de prótese dentária</span></div>
+          <h1 id="titulo">Seu laboratório <em>organizado</em>, do pedido ao recebimento.</h1>
+          <p class="sub">O LabManager junta a ficha do pedido, a fila de produção, as entregas, a conta corrente de cada dentista, as comissões da equipe e os relatórios num lugar só. Roda no computador do laboratório e abre no celular de quem está na bancada.</p>
+          <div class="acoes">
+            <a class="btn" data-wa="Olá! Vi o LabManager no site e quero uma demonstração para o meu laboratório." href="#contato">Quero uma demonstração</a>
+            <a class="btn btn-claro" href="#funcoes">Ver as funções</a>
+          </div>
+          <ul class="lm-checks">
+            <li>Funciona sem internet</li>
+            <li>Os dados ficam no computador do laboratório</li>
+            <li>Traz os cadastros e pedidos do Prótese 2002</li>
+          </ul>
+        </div>
+        <div class="lm-palco">
+          <div class="lm-janela">
+            <div class="lm-barra" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="img/labmanager/01-fila.webp" width="2000" height="1250" alt="Fila de produção com os pedidos do dia, valores a receber e pedidos atrasados">
+          </div>
+          <div class="lm-fone"><img src="img/labmanager/10-cel-fila.webp" width="975" height="2110" alt="Pedido aberto no celular, com serviços e etapas"></div>
+        </div>
+      </section>
+
+      <div class="lm-faixa">
+        <div><strong>1 ficha</strong><span>do pedido à entrega, com dentes, cor e fotos</span></div>
+        <div><strong>20 listas</strong><span>de preço, com % de acréscimo ou desconto</span></div>
+        <div><strong>Automático</strong><span>débito do dentista e comissão ao finalizar</span></div>
+        <div><strong>PDF e planilha</strong><span>em todos os relatórios</span></div>
+      </div>
+      <p class="lm-nota">Todas as telas desta página usam dados fictícios.</p>
+    </div>
+
+    <section class="sec" aria-labelledby="dores">
+      <div class="wrap">
+        <h2 id="dores">Feito para o dia a dia de um laboratório de verdade</h2>
+        <p class="sub">Caixinha, escala de cor, prova que volta com ajuste, dentista que paga parte agora e parte no mês que vem. O sistema foi desenhado em cima dessas situações.</p>
+        <div class="lm-dores">
+          <article>
+            <span class="antes">Antes</span>
+            <h3>“Esse trabalho é para quando?”</h3>
+            <p>Pedido no papel, prazo na cabeça de quem recebeu e a urgência descoberta no dia da entrega.</p>
+            <p class="depois">a fila mostra urgentes e atrasados primeiro, e o calendário mostra o que sai em cada dia.</p>
+          </article>
+          <article>
+            <span class="antes">Antes</span>
+            <h3>“Quanto esse dentista me deve?”</h3>
+            <p>Caderno de fiado, extrato montado à mão e pagamento que ninguém sabe se já foi abatido.</p>
+            <p class="depois">o pedido finalizado entra na conta do dentista e o saldo aparece na ficha, em vermelho ou verde.</p>
+          </article>
+          <article>
+            <span class="antes">Antes</span>
+            <h3>“Quanto dá a comissão do mês?”</h3>
+            <p>Fim de mês somando etapa por etapa, com risco de esquecer um serviço ou pagar duas vezes.</p>
+            <p class="depois">cada etapa de cada serviço gera a comissão do técnico na hora em que o pedido fica pronto.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec-alt" id="funcoes" aria-labelledby="funcoes-t">
+      <div class="wrap">
+        <h2 id="funcoes-t">O que o LabManager faz</h2>
+        <p class="sub">Clique em qualquer tela para ampliar.</p>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">01</span>
+            <h3>A ficha do pedido, como a de papel, só que sem erro de conta</h3>
+            <p>Digite o código do dentista e do serviço e aperte Enter: o preço vem da lista certa, o total se calcula sozinho e o prazo sai do tipo de serviço.</p>
+            <ul>
+              <li>Paciente, entrada, prevista, prazo do laboratório, caixinha, escala e cor</li>
+              <li>Odontograma para marcar os dentes, antagonista, modelo e material recebido</li>
+              <li>Fotos do trabalho e linha do tempo de tudo o que aconteceu</li>
+              <li>Teclas de atalho para quem digita rápido</li>
+            </ul>
+          </div>
+          <div class="lm-duas">
+            <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/04-ficha.webp"><img src="img/labmanager/04-ficha.webp" width="2000" height="1250" loading="lazy" alt="Ficha do pedido com os serviços, preços da lista e total"></button></figure>
+          </div>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">02</span>
+            <h3>Fila de produção e quadro por setor</h3>
+            <p>Cada pedido mostra em que etapa está, quem é o responsável e quando tem que sair. Avançar de etapa é um clique, pelo computador ou pelo celular.</p>
+            <ul>
+              <li>Urgentes e atrasados sempre no topo</li>
+              <li>Quadro separado por setor: cerâmica, metal, resina, implante</li>
+              <li>Provas com data de retorno e aviso quando atrasam</li>
+              <li>Carga de trabalho de cada pessoa da equipe</li>
+            </ul>
+          </div>
+          <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/02-quadro.webp"><img src="img/labmanager/02-quadro.webp" width="2000" height="1250" loading="lazy" alt="Quadro por setor com os serviços de cerâmica, implante e metal"></button></figure>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">03</span>
+            <h3>Calendário de entregas</h3>
+            <p>Veja a semana ou o mês inteiro pela data do dentista ou pelo prazo interno do laboratório. Os atrasados ficam destacados em cima.</p>
+            <ul>
+              <li>Entrega física registrada: quem levou, quem recebeu e a hora</li>
+              <li>Etiqueta e comprovante do pedido para imprimir</li>
+              <li>Orçamentos separados dos pedidos em produção</li>
+            </ul>
+          </div>
+          <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/03-calendario.webp"><img src="img/labmanager/03-calendario.webp" width="2000" height="1250" loading="lazy" alt="Calendário do mês com os pedidos atrasados destacados"></button></figure>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">04</span>
+            <h3>Conta corrente de cada dentista</h3>
+            <p>Ao finalizar o pedido, o valor entra na conta do dentista. Pagamentos em Pix, dinheiro, depósito ou cheque abatem o saldo, e o extrato sai pronto para enviar.</p>
+            <ul>
+              <li>Quem está devendo e quem tem crédito, numa tela</li>
+              <li>Recibo numerado, com valor por extenso e desconto de IR</li>
+              <li>Lançamento nunca é apagado: correção é feita por estorno, com histórico</li>
+            </ul>
+          </div>
+          <div class="lm-duas">
+            <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/06-saldos.webp"><img src="img/labmanager/06-saldos.webp" width="2000" height="1250" loading="lazy" alt="Resumo financeiro com valores a receber, créditos, recebido e faturado no mês"></button></figure>
+          </div>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">05</span>
+            <h3>Comissões calculadas sozinhas</h3>
+            <p>Cada serviço tem suas etapas (troquel, modelagem, cerâmica, acabamento) com valor fixo ou percentual e o técnico de cada uma. O fechamento do mês vira um relatório.</p>
+            <ul>
+              <li>Relatório detalhado, item por item, ou resumido por serviço</li>
+              <li>Versão sem valores para mostrar só a produção</li>
+              <li>PDF pronto para imprimir e assinar</li>
+            </ul>
+          </div>
+          <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/07-comissoes.webp"><img src="img/labmanager/07-comissoes.webp" width="2000" height="1250" loading="lazy" alt="Comissões de um técnico no mês, com o total"></button></figure>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">06</span>
+            <h3>Relatórios para decidir com números</h3>
+            <p>Produção mensal, pedidos finalizados, urgentes, provas, remoldagens, movimento financeiro, saldo mês a mês e o relatório anual, todos com período e exportação.</p>
+            <ul>
+              <li>Mais de 20 relatórios, em PDF e em planilha</li>
+              <li>Fechamento anual que trava o período sem apagar nada</li>
+              <li>Registro de alterações: quem mudou o quê, de qual valor para qual</li>
+            </ul>
+          </div>
+          <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/08-relatorios.webp"><img src="img/labmanager/08-relatorios.webp" width="2000" height="1250" loading="lazy" alt="Relatório de produção mensal por serviço"></button></figure>
+        </div>
+
+        <div class="lm-func">
+          <div class="lm-func-txt">
+            <span class="lm-num">07</span>
+            <h3>Agenda do laboratório</h3>
+            <p>A tela de entrada mostra os compromissos do dia, as entregas de hoje e o atalho para os pedidos pendentes. Cada um vê o que precisa.</p>
+            <ul>
+              <li>Compromissos com horário e lista de “para fazer”</li>
+              <li>Aniversariantes entre os dentistas</li>
+              <li>Dono e funcionários com permissões diferentes</li>
+            </ul>
+          </div>
+          <figure class="tela"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/09-agenda.webp"><img src="img/labmanager/09-agenda.webp" width="2000" height="1250" loading="lazy" alt="Agenda do dia com compromissos, entregas e minicalendário"></button></figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="celular">
+      <div class="wrap lm-cel">
+        <div>
+          <h2 id="celular">Na bancada, pelo celular</h2>
+          <p class="sub">Os celulares da equipe abrem o sistema pelo Wi-Fi do laboratório, sem instalar nada da loja de aplicativos. O técnico consulta o pedido, vê os dentes e a cor e avança a etapa ali mesmo.</p>
+          <ul class="lm-checks">
+            <li>Instala na tela inicial como um aplicativo</li>
+            <li>Conecta pelo QR Code que aparece no computador</li>
+            <li>Cada pessoa entra com o próprio login</li>
+          </ul>
+        </div>
+        <figure class="tela cel"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/10-cel-fila.webp"><img src="img/labmanager/10-cel-fila.webp" width="975" height="2110" loading="lazy" alt="Pedido com serviços e etapas no celular"></button><figcaption>Pedido e etapas</figcaption></figure>
+        <figure class="tela cel"><button type="button" class="tela-moldura tela-abrir" data-src="img/labmanager/11-cel-agenda.webp"><img src="img/labmanager/11-cel-agenda.webp" width="975" height="2110" loading="lazy" alt="Agenda do dia no celular"></button><figcaption>Agenda do dia</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="sec sec-alt" aria-labelledby="seguranca">
+      <div class="wrap">
+        <h2 id="seguranca">Seus dados guardados e conferidos</h2>
+        <p class="sub">Nada vai para a nuvem de ninguém: o banco fica no computador do laboratório, com cópias de segurança que o próprio sistema confere.</p>
+        <div class="lm-grade">
+          <article><div class="ico" aria-hidden="true">💾</div><h3>Backup automático e conferido</h3><p>Cada cópia é verificada antes de ser dada como boa, e a restauração confere de novo antes de trocar os dados.</p></article>
+          <article><div class="ico" aria-hidden="true">🔒</div><h3>Login com senha e permissões</h3><p>O dono vê valores, saldos e relatórios; a equipe vê o que precisa para produzir.</p></article>
+          <article><div class="ico" aria-hidden="true">🧾</div><h3>Histórico que não some</h3><p>Lançamentos financeiros não são apagados nem editados: tudo é corrigido por estorno, com registro.</p></article>
+          <article><div class="ico" aria-hidden="true">👥</div><h3>Duas pessoas, mesma ficha</h3><p>Se alguém salvar por cima do que outra pessoa acabou de mudar, o sistema avisa em vez de perder o trabalho.</p></article>
+          <article><div class="ico" aria-hidden="true">📴</div><h3>Sem internet, sem parar</h3><p>Caiu a internet? O laboratório continua trabalhando normalmente pela rede local.</p></article>
+          <article><div class="ico" aria-hidden="true">📅</div><h3>Fechamento anual seguro</h3><p>Trava o ano fechado para ninguém alterar sem querer, sem apagar nenhum dado.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="antigo">
+      <div class="wrap lm-antigo">
+        <div>
+          <h2 id="antigo">Ainda usa o Prótese 2002?</h2>
+          <p class="sub">O LabManager nasceu para substituir o sistema antigo sem mudar o jeito de trabalhar: mesmas fichas, mesmos códigos e as teclas de sempre. Os dentistas, serviços, listas de preço, pedidos e saldos são importados e conferidos antes de começar.</p>
+          <div class="acoes"><a class="btn" data-wa="Olá! Uso o Prótese 2002 e quero saber como trazer meus dados para o LabManager." href="#contato">Quero trocar de sistema</a></div>
+        </div>
+        <table class="lm-tabela">
+          <thead><tr><th>No sistema antigo</th><th>No LabManager</th></tr></thead>
+          <tbody>
+            <tr><td>Ficha de pedido</td><td>A mesma ordem de campos, com a grade Qt · Código · Descrição · Unitário · % · Total</td></tr>
+            <tr><td>Código + Enter</td><td>Funciona igual: 12, 012 ou 0012 dão no mesmo</td></tr>
+            <tr><td>Contas a receber</td><td>Débito, crédito, estorno e pagamento antecipado, com saldo na hora</td></tr>
+            <tr><td>Recibos</td><td>Numerados, com IR e valor por extenso, em PDF</td></tr>
+            <tr><td>Fechamento anual</td><td>Trava o período, mas não apaga nada</td></tr>
+            <tr><td>Só no computador</td><td>No computador e nos celulares do laboratório</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="sec sec-alt" aria-labelledby="implantacao">
+      <div class="wrap">
+        <h2 id="implantacao">Como é a implantação</h2>
+        <p class="sub">A gente cuida da parte técnica para a equipe só precisar aprender a usar.</p>
+        <ol class="lm-passos">
+          <li><h3>Conversa</h3><p>Entendemos como o seu laboratório trabalha: serviços, etapas, listas de preço e quem faz o quê.</p></li>
+          <li><h3>Importação</h3><p>Trazemos os dados do sistema antigo e conferimos os totais com você antes de virar a chave.</p></li>
+          <li><h3>Instalação</h3><p>Instalamos no computador do laboratório, ligamos os celulares e deixamos o backup automático funcionando.</p></li>
+          <li><h3>Treinamento</h3><p>Ensinamos a equipe e ficamos por perto nas primeiras semanas para tirar dúvidas.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sec" aria-labelledby="duvidas">
+      <div class="wrap">
+        <h2 id="duvidas">Perguntas frequentes</h2>
+        <div class="lm-faq">
+          <details><summary>Precisa de internet para funcionar?</summary><p>Não. O sistema roda no computador do laboratório e os celulares acessam pelo Wi-Fi interno. A internet só é útil para mandar extratos e mensagens aos dentistas.</p></details>
+          <details><summary>Onde ficam os meus dados?</summary><p>No computador do laboratório, num arquivo só. Você é dono dos dados, e o backup automático guarda cópias conferidas que podem ir para um pendrive.</p></details>
+          <details><summary>E se o computador estragar?</summary><p>Com a cópia de segurança em outro lugar, o sistema é instalado em outro computador e a cópia é restaurada, já conferida.</p></details>
+          <details><summary>Dá para usar no celular?</summary><p>Sim. Os celulares da equipe abrem o sistema pelo navegador e podem instalá-lo na tela inicial como um aplicativo.</p></details>
+          <details><summary>Dá para adaptar ao meu laboratório?</summary><p>Sim. Serviços, etapas de comissão, listas de preço, formas de pagamento e dados do laboratório nos documentos são configuráveis. Se precisar de algo diferente, a gente conversa e ajusta.</p></details>
+          <details><summary>Meus funcionários veem os valores?</summary><p>Só se você quiser. As permissões separam o que o dono vê do que cada pessoa da equipe vê.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="final" id="contato" aria-labelledby="final-t">
+      <div class="wrap final-in">
+        <h2 id="final-t">Quer ver o LabManager funcionando no seu laboratório?</h2>
+        <p class="sub">Mostramos o sistema com os seus serviços e tiramos todas as dúvidas, sem compromisso.</p>
+        <div class="acoes">
+          <a class="btn btn-branco" data-wa="Olá! Vi o LabManager no site e quero uma demonstração para o meu laboratório." href="mailto:vemsitecontato@gmail.com">Pedir uma demonstração</a>
+          <a class="btn btn-contorno" href="index.html#trabalhos">Ver outros projetos</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <div class="wrap rodape-in">
+      <span>© <span id="ano"></span> <span data-nome></span></span>
+      <span class="rodape-links"><a href="privacidade.html">Política de privacidade</a></span>
+    </div>
+  </footer>
+
+  <script src="config.js?v=136db5ee89af"></script>
+  <script src="contato.js?v=27c9730acdba"></script>
+  <script>
+    (function () {
+      document.querySelectorAll("[data-nome]").forEach((el) => (el.textContent = CONFIG.nome));
+      document.getElementById("ano").textContent = new Date().getFullYear();
+      document.querySelectorAll("[data-wa]").forEach((a) => {
+        a.href = CONTATO.url(a.dataset.wa);
+        if (CONTATO.whatsappDisponivel) { a.target = "_blank"; a.rel = "noopener"; }
+      });
+
+      // Ampliação: clicar numa tela abre a imagem inteira, com setas para passar.
+      const botoes = [...document.querySelectorAll(".tela-abrir")];
+      const telas = botoes.map((b) => { const img = b.querySelector("img"); return { src: b.dataset.src, legenda: img.alt, cel: !!b.closest(".cel") }; });
+      botoes.forEach((b, i) => { b.dataset.i = i; b.setAttribute("aria-label", "Ampliar: " + telas[i].legenda); });
+      const lb = document.createElement("dialog");
+      lb.className = "lb";
+      lb.setAttribute("aria-label", "Telas do LabManager");
+      lb.setAttribute("aria-describedby", "galeriaLegenda");
+      const icone = (c) => `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${c}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      lb.innerHTML = `<button type="button" class="lb-x" aria-label="Fechar">${icone("M6 6l12 12M18 6L6 18")}</button>
+        <figure><div class="lb-midia"><div class="lb-rolo"><img alt=""></div>
+          <button type="button" class="lb-nav lb-ant" aria-label="Tela anterior">${icone("M14 5l-7 7 7 7")}</button>
+          <button type="button" class="lb-nav lb-prox" aria-label="Próxima tela">${icone("M10 5l7 7-7 7")}</button>
+        </div><figcaption id="galeriaLegenda" aria-live="polite"></figcaption></figure>`;
+      document.body.appendChild(lb);
+      let atual = 0;
+      const mostrar = (i) => {
+        atual = (i + telas.length) % telas.length;
+        const t = telas[atual];
+        const img = lb.querySelector("img");
+        img.src = t.src;
+        img.alt = t.legenda;
+        lb.classList.toggle("lb-cel", t.cel);
+        lb.querySelector("figcaption").textContent = `${t.legenda} (${atual + 1} de ${telas.length})`;
+        lb.querySelector(".lb-rolo").scrollTop = 0;
+      };
+      document.addEventListener("click", (ev) => {
+        const b = ev.target.closest(".tela-abrir");
+        if (!b) return;
+        mostrar(Number(b.dataset.i));
+        lb.showModal();
+        document.body.classList.add("galeria-aberta");
+      });
+      lb.addEventListener("close", () => document.body.classList.remove("galeria-aberta"));
+      lb.querySelector(".lb-x").addEventListener("click", () => lb.close());
+      lb.querySelector(".lb-ant").addEventListener("click", () => mostrar(atual - 1));
+      lb.querySelector(".lb-prox").addEventListener("click", () => mostrar(atual + 1));
+      lb.addEventListener("click", (ev) => { if (ev.target === lb) lb.close(); });
+      lb.addEventListener("keydown", (ev) => {
+        if (ev.key === "ArrowLeft") { ev.preventDefault(); mostrar(atual - 1); }
+        if (ev.key === "ArrowRight") { ev.preventDefault(); mostrar(atual + 1); }
+      });
+    })();
+  </script>
+</body>
+</html>
