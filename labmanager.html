@@ -94,6 +94,19 @@
     .lm-faq details[open] summary::after { content: "–"; }
     .lm-faq p { color: var(--suave); padding-bottom: 16px; }
     .lm-nota { color: var(--suave); font-size: 0.88rem; margin-top: 18px; }
+
+    /* Planos: mesmos cartões do site (.plano), em grade de dois e um embaixo do outro no celular */
+    .lm-planos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 30px; max-width: 880px; }
+    .lm-planos .plano h3 { font-size: 1.3rem; }
+    .lm-planos .plano-sub { color: var(--suave); font-weight: 600; margin-top: 2px; }
+    .lm-planos .plano-preco { margin-bottom: 14px; }
+    .lm-implantacao { max-width: 880px; margin-top: 18px; display: grid; grid-template-columns: auto 1fr; gap: 8px 26px; align-items: center; background: var(--papel); border: 1px solid var(--linha); border-radius: var(--raio); padding: 20px 24px; }
+    .lm-implantacao .rotulo { color: var(--suave); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    .lm-implantacao .valor { display: block; font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+    .lm-implantacao p { color: var(--suave); font-size: 0.95rem; }
+    .lm-garantias { list-style: none; padding: 0; margin: 18px 0 0; max-width: 880px; display: flex; flex-wrap: wrap; gap: 10px 26px; color: var(--suave); font-size: 0.93rem; }
+    .lm-garantias li { padding-left: 24px; position: relative; }
+    .lm-garantias li::before { content: "✓"; position: absolute; left: 0; color: var(--cor); font-weight: 800; }
     .final p.sub { color: var(--noite-suave); margin-inline: auto; }
 
     @media (max-width: 900px) {
@@ -111,7 +124,9 @@
       .lm-passos { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 560px) {
-      .lm-faixa, .lm-passos { grid-template-columns: 1fr; }
+      .lm-faixa, .lm-passos, .lm-planos, .lm-implantacao { grid-template-columns: 1fr; }
+      .lm-planos .plano { padding: 24px 22px; }
+      .lm-implantacao { padding: 18px 20px; }
       .lm-fone { width: 34%; right: -4px; border-radius: 22px; padding: 6px; }
       .lm-fone img { border-radius: 17px; }
       .lm-tabela th, .lm-tabela td { padding: 10px 12px; }
@@ -365,11 +380,57 @@
       </div>
     </section>
 
-    <section class="sec" aria-labelledby="duvidas">
+    <section class="sec" id="planos" aria-labelledby="planos-t">
+      <div class="wrap">
+        <h2 id="planos-t">Planos</h2>
+        <p class="sub">Uma implantação e uma mensalidade, sem fidelidade. Atualizações automáticas, backup e suporte pelo WhatsApp estão em todos os planos.</p>
+        <div class="lm-planos">
+          <article class="plano">
+            <h3>Laboratório</h3>
+            <p class="plano-sub">Até 5 usuários</p>
+            <p class="plano-preco">R$ 149<small>/mês</small></p>
+            <ul>
+              <li>Todas as funções do sistema</li>
+              <li>No computador e nos celulares do laboratório</li>
+              <li>Atualizações automáticas</li>
+              <li>Backup automático conferido</li>
+              <li>Suporte pelo WhatsApp</li>
+            </ul>
+            <a class="btn" data-wa="Olá! Tenho interesse no plano Laboratório do LabManager (até 5 usuários)." href="#contato">Quero este plano</a>
+          </article>
+          <article class="plano destaque">
+            <span class="plano-tag">Equipe maior</span>
+            <h3>Laboratório Plus</h3>
+            <p class="plano-sub">Usuários sem limite</p>
+            <p class="plano-preco">R$ 249<small>/mês</small></p>
+            <ul>
+              <li>Tudo do plano Laboratório</li>
+              <li>Quantos usuários a equipe precisar</li>
+              <li>Atendimento antes dos outros</li>
+              <li>Até 2 horas por mês de ajustes sob medida</li>
+            </ul>
+            <a class="btn" data-wa="Olá! Tenho interesse no plano Laboratório Plus do LabManager (usuários sem limite)." href="#contato">Quero este plano</a>
+          </article>
+        </div>
+        <div class="lm-implantacao">
+          <div><span class="rotulo">Implantação, uma vez só</span><strong class="valor">R$ 990</strong></div>
+          <p>Instalação no computador do laboratório, importação dos dados (quando o sistema antigo deixa exportar), treinamento da equipe e 30 dias de acompanhamento de perto.</p>
+        </div>
+        <ul class="lm-garantias">
+          <li>Pagamento anual: 2 meses grátis</li>
+          <li>Sem fidelidade</li>
+          <li>Seus dados são seus: se a mensalidade parar, o sistema continua abrindo para consulta e backup</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sec sec-alt" aria-labelledby="duvidas">
       <div class="wrap">
         <h2 id="duvidas">Perguntas frequentes</h2>
         <div class="lm-faq">
-          <details><summary>Precisa de internet para funcionar?</summary><p>Não. O sistema roda no computador do laboratório e os celulares acessam pelo Wi-Fi interno. A internet só é útil para mandar extratos e mensagens aos dentistas.</p></details>
+          <details><summary>Quanto custa?</summary><p>Implantação de R$ 990, paga uma vez, e mensalidade a partir de R$ 149. No pagamento anual, 2 meses saem de graça. Veja os <a href="#planos">planos</a>.</p></details>
+          <details><summary>Precisa de internet para funcionar?</summary><p>Não para trabalhar: o sistema roda no computador do laboratório e os celulares acessam pelo Wi-Fi interno. A internet é usada na ativação, para receber as atualizações e renovar a licença (que vale 30 dias sem conexão) e para mandar extratos aos dentistas.</p></details>
+          <details><summary>E se eu parar de pagar?</summary><p>Nada some. O sistema continua abrindo só para consulta: dá para ver, imprimir e fazer backup de tudo. Os dados são do laboratório.</p></details>
           <details><summary>Onde ficam os meus dados?</summary><p>No computador do laboratório, num arquivo só. Você é dono dos dados, e o backup automático guarda cópias conferidas que podem ir para um pendrive.</p></details>
           <details><summary>E se o computador estragar?</summary><p>Com a cópia de segurança em outro lugar, o sistema é instalado em outro computador e a cópia é restaurada, já conferida.</p></details>
           <details><summary>Dá para usar no celular?</summary><p>Sim. Os celulares da equipe abrem o sistema pelo navegador e podem instalá-lo na tela inicial como um aplicativo.</p></details>
